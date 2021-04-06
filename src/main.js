@@ -11,56 +11,57 @@ import {createMostCommentedTitle} from './view/most-commented-title';
 import {createFooterStatistics} from './view/footer-statistics';
 import {createPopupFilmInfo} from './view/popup-film-info';
 
+import './mock/movie.js';
+
 const CARD_FILM_COUNT = 5;
 const CARD_FILM_EXTRA_COUNT = 2;
 const FILM_EXTRA_BLOCK_COUNT = 2;
 
-const insertPlace = 'beforeend';
-const render = (container, template, place) => {
+const render = (container, template, place = 'beforeend') => {
   container.insertAdjacentHTML(place, template);
 };
 
-const HeaderElement = document.querySelector('.header');
+const headerElement = document.querySelector('.header');
 const MainElement = document.querySelector('.main');
 
 
-render (HeaderElement, createHeaderTemplate(), insertPlace);
-render (MainElement, createNavTemplate(), insertPlace);
-render (MainElement, createSortTemplate(), insertPlace);
-render (MainElement, createFilmBlockTemplate(), insertPlace);
+render (headerElement, createHeaderTemplate());
+render (MainElement, createNavTemplate());
+render (MainElement, createSortTemplate());
+render (MainElement, createFilmBlockTemplate());
 
 const FilmBlock = MainElement.querySelector('.films');
 const FilmList = MainElement.querySelector('.films-list');
 
-render (FilmList, createFilmListContainer(), insertPlace);
+render (FilmList, createFilmListContainer());
 
 const FilmListContainer = MainElement.querySelector('.films-list__container');
 
 for (let i = 0; i < CARD_FILM_COUNT; i++) {
-  render (FilmListContainer, createFilmCardTemplate(), insertPlace);
+  render (FilmListContainer, createFilmCardTemplate());
 }
-render (FilmList, createMoreBtn(), insertPlace);
+render (FilmList, createMoreBtn());
 
 for (let i = 0; i < FILM_EXTRA_BLOCK_COUNT; i++) {
-  render (FilmBlock, createFilmExtraBlockTemplate(), insertPlace);
+  render (FilmBlock, createFilmExtraBlockTemplate());
 }
 
 const [TopRateFilmsBlock, MostCommentedFilmsBlock] = FilmBlock.querySelectorAll('.films-list.films-list--extra');
 
-render (TopRateFilmsBlock, createTopRatedTitleTemplate(), insertPlace);
-render (MostCommentedFilmsBlock, createMostCommentedTitle(), insertPlace);
-render (TopRateFilmsBlock, createFilmListContainer(), insertPlace);
-render (MostCommentedFilmsBlock, createFilmListContainer(), insertPlace);
+render (TopRateFilmsBlock, createTopRatedTitleTemplate());
+render (MostCommentedFilmsBlock, createMostCommentedTitle());
+render (TopRateFilmsBlock, createFilmListContainer());
+render (MostCommentedFilmsBlock, createFilmListContainer());
 
 const topRateFilmsContainer = TopRateFilmsBlock.querySelector('.films-list__container');
 const mostCommentedFilmsContainer = MostCommentedFilmsBlock.querySelector('.films-list__container');
 for (let i = 0; i < CARD_FILM_EXTRA_COUNT; i++) {
-  render (topRateFilmsContainer, createFilmCardTemplate(), insertPlace);
-  render (mostCommentedFilmsContainer, createFilmCardTemplate(), insertPlace);
+  render (topRateFilmsContainer, createFilmCardTemplate());
+  render (mostCommentedFilmsContainer, createFilmCardTemplate());
 }
 
 const footerBlock = document.querySelector('.footer');
 const footerStatisticsBlock = footerBlock.querySelector('.footer__statistics');
 
-render (footerStatisticsBlock, createFooterStatistics(), insertPlace);
+render (footerStatisticsBlock, createFooterStatistics());
 render (footerBlock, createPopupFilmInfo(), 'afterend');

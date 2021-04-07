@@ -1,4 +1,43 @@
 import dayjs from 'dayjs';
+const POSTER_LINK = [
+  './images/posters/made-for-each-other.png',
+  './images/posters/popeye-meets-sinbad.png',
+  './images/posters/sagebrush-trail.jpg',
+  './images/posters/santa-claus-conquers-the-martians.jpg',
+  './images/posters/the-dance-of-life.jpg',
+  './images/posters/the-great-flamarion.jpg',
+  './images/posters/the-man-with-the-golden-arm.jpg',
+];
+const AGE_RATING = [
+  '0+',
+  '6+',
+  '12+',
+  '16+',
+  '18+',
+];
+const DIRECTORS = [
+  'Стив Джобс',
+  'Билл Гейтс',
+  'Илон Маск',
+];
+const COUNTRY = [
+  'США',
+  'Россия',
+  'Франция',
+  'Италия',
+];
+const EMOTION = [
+  'smile',
+  'sleeping',
+  'puke',
+  'angry',
+];
+
+const getRandomItem = (array) => {
+  const randomIndex = getRandomInteger(0, array.length - 1);
+
+  return array[randomIndex]
+}
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -17,13 +56,13 @@ const generateDate = () => {
 
 const generatePosterLink = () => {
   const posterLink = [
-    '../../public/images/posters/made-for-each-other.png',
-    '../../public/images/posters/popeye-meets-sinbad.png',
-    '../../public/images/posters/sagebrush-trail.jpg',
-    '../../public/images/posters/santa-claus-conquers-the-martians.jpg',
-    '../../public/images/posters/the-dance-of-life.jpg',
-    '../../public/images/posters/the-great-flamarion.jpg',
-    '../../public/images/posters/the-man-with-the-golden-arm.jpg',
+    './images/posters/made-for-each-other.png',
+    './images/posters/popeye-meets-sinbad.png',
+    './images/posters/sagebrush-trail.jpg',
+    './images/posters/santa-claus-conquers-the-martians.jpg',
+    './images/posters/the-dance-of-life.jpg',
+    './images/posters/the-great-flamarion.jpg',
+    './images/posters/the-man-with-the-golden-arm.jpg',
   ];
 
   const randomIndex = getRandomInteger(0, posterLink.length - 1);
@@ -57,7 +96,7 @@ const generateFilmTitle = () => {
 };
 
 const generateTotalRating = () => {
-  return getRandomInteger(0.0, 10);
+  return getRandomInteger(0, 10);
 };
 
 const generateAgeRating = () => {
@@ -205,7 +244,7 @@ export const generateComments = (id) => {
     author: 'Ilya O\'Reilly',
     comment: 'a film that changed my life, a true masterpiece, post-credit scene was just amazing omg.',
     date: generateCommentDate(),
-    emotion: generateEmotion(),
+    emotion: getRandomItem(EMOTION),
   };
 };
 
@@ -216,16 +255,16 @@ export const generateMovie = () => {
   return {
     id: null,
     film_info: {
-      poster: generatePosterLink(),
+      poster: getRandomItem(POSTER_LINK),
       titles: generateFilmTitle(),
       total_rating: generateTotalRating(),
-      age_rating: generateAgeRating(),
-      director: generateDirector(),
+      age_rating: getRandomItem(AGE_RATING),
+      director: getRandomItem(DIRECTORS),
       writers: generateWrites(),
       actors: generateActors(),
       release: {
         date: generateDate(),
-        release_country: generateReleaseCountry(),
+        release_country: getRandomItem(COUNTRY),
       },
       runtime: generateRuntime(),
       genre: generateGenre(),
@@ -240,3 +279,5 @@ export const generateMovie = () => {
     comments,
   };
 };
+
+console.log(generateMovie());

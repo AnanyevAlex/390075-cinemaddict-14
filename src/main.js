@@ -11,12 +11,17 @@ import {createMostCommentedTitle} from './view/most-commented-title';
 import {createFooterStatistics} from './view/footer-statistics';
 import {createPopupFilmInfo} from './view/popup-film-info';
 import {generateMovie} from './mock/movie';
+import {generateFilter} from './mock/filter';
 
 const CARD_FILM_COUNT = 5;
 const CARD_FILM_EXTRA_COUNT = 2;
 const FILM_EXTRA_BLOCK_COUNT = 2;
 
 const films = new Array(CARD_FILM_COUNT).fill().map(generateMovie);
+const  filters = generateFilter(films);
+
+console.log(films)
+console.log(filters)
 
 const render = (container, template, place = 'beforeend') => {
   container.insertAdjacentHTML(place, template);
@@ -39,7 +44,6 @@ render (filmList, createFilmListContainer());
 const filmListContainer = mainElement.querySelector('.films-list__container');
 
 for (let i = 0; i < CARD_FILM_COUNT; i++) {
-  console.log(i)
   render (filmListContainer, createFilmCardTemplate(films[i]));
 }
 render (filmList, createMoreBtn());
@@ -55,15 +59,15 @@ render (mostCommentedFilmsBlock, createMostCommentedTitle());
 render (topRateFilmsBlock, createFilmListContainer());
 render (mostCommentedFilmsBlock, createFilmListContainer());
 
-const topRateFilmsContainer = topRateFilmsBlock.querySelector('.films-list__container');
-const mostCommentedFilmsContainer = mostCommentedFilmsBlock.querySelector('.films-list__container');
-for (let i = 0; i < CARD_FILM_EXTRA_COUNT; i++) {
-  render (topRateFilmsContainer, createFilmCardTemplate());
-  render (mostCommentedFilmsContainer, createFilmCardTemplate());
-}
+// const topRateFilmsContainer = topRateFilmsBlock.querySelector('.films-list__container');
+// const mostCommentedFilmsContainer = mostCommentedFilmsBlock.querySelector('.films-list__container');
+// for (let i = 0; i < CARD_FILM_EXTRA_COUNT; i++) {
+//   render (topRateFilmsContainer, createFilmCardTemplate());
+//   render (mostCommentedFilmsContainer, createFilmCardTemplate());
+// }
 
 const footerBlock = document.querySelector('.footer');
 const footerStatisticsBlock = footerBlock.querySelector('.footer__statistics');
 
 render (footerStatisticsBlock, createFooterStatistics());
-render (footerBlock, createPopupFilmInfo(), 'afterend');
+render (footerBlock, createPopupFilmInfo(films[0]), 'afterend');

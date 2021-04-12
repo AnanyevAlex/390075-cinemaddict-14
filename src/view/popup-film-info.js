@@ -17,10 +17,10 @@ const createCommentsTemplate = (comments) => {
         </p>
       </div>
     </li>
-    `
+    `,
   ).join('')}
-  </ul>`
-}
+  </ul>`;
+};
 
 const createGenresTemplate = (genres) => {
   return `<tr class="film-details__row">
@@ -30,12 +30,11 @@ const createGenresTemplate = (genres) => {
               <span className="film-details__genre">${item}</span>
               `).join('')}
               </td>
-            </tr>`
+            </tr>`;
 };
 
 export const createPopupFilmInfo = (film) => {
-  console.log(film)
-  const { film_info, user_details } = film
+  const { film_info, user_details } = film;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">

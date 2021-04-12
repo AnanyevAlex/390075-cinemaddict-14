@@ -6,7 +6,7 @@ export const dateRelese = (date, type) => {
 
 export const getCommentDate = (date) => {
   return dayjs(date).format('YYYY/MM/D HH:MM' );
-}
+};
 
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -18,7 +18,7 @@ export const getRandomInteger = (a = 0, b = 1) => {
 export const getRandomItem = (array) => {
   const randomIndex = getRandomInteger(0, array.length - 1);
 
-  return array[randomIndex]
+  return array[randomIndex];
 };
 
 export const getRandomItems = (array, maxCount) => {
@@ -36,10 +36,10 @@ export const generateDate = () => {
 
 export const isWatch = (watch) => {
   return watch === true ? 'film-card__controls-item--active' : '';
-}
+};
 
 export const isInWatchlist = (watchlist) => {
-  return watchlist === true ? 'film-card__controls-item--active' : ''
+  return watchlist === true ? 'film-card__controls-item--active' : '';
 };
 
 export const isFavorite = (favorite) => {
@@ -47,15 +47,15 @@ export const isFavorite = (favorite) => {
 };
 
 export const getTimeFromMins = (mins) => {
-  let hours = Math.trunc(mins/60);
-  let minutes = mins % 60;
+  const hours = Math.trunc(mins/60);
+  const minutes = mins % 60;
   return hours + 'h ' + minutes + 'm';
 };
 
 export const getStringOFArray = (item) => {
   return item.join(', ');
-}
+};
 
 export const isChecked = (boolean) => {
   return boolean === true ? 'checked' : '';
-}
+};

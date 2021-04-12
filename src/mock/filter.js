@@ -1,7 +1,6 @@
 import {isWatch, isInWatchlist, isFavorite} from '../utils';
 
 const filmToFilterMap = {
-  all: (films) => films.length,
   watchlist: (films) => films.filter((film) => isInWatchlist(film.user_details.watchlist)).length,
   history: (films) => films.filter((film) => isWatch(film.user_details.already_watched)).length,
   favorites: (films) => films.filter((film) => isFavorite(film.user_details.favorite)).length,

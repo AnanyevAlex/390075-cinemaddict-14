@@ -1,7 +1,7 @@
 import {isWatch, isInWatchlist, isFavorite, getTimeFromMins, dateRelese} from '../utils';
 
 export const createFilmCardTemplate = (film) => {
-  const { film_info, user_details } = film
+  const { film_info, user_details } = film;
 
   return `<article class="film-card">
           <h3 class="film-card__title">${film_info.titles.title}</h3>

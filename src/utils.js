@@ -1,5 +1,28 @@
 import dayjs from 'dayjs';
 
+export const RenderPosition = {
+  BEFOREEND: 'beforeend',
+  AFTEREND: 'afterend',
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTEREND:
+      container.after(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
 export const dateRelese = (date, type) => {
   return type === 'year' ? dayjs(date).format('YYYY') : dayjs(date).format('D-MMMM-YYYY');
 };
@@ -58,4 +81,15 @@ export const getStringOFArray = (item) => {
 
 export const isChecked = (boolean) => {
   return boolean === true ? 'checked' : '';
+};
+
+export const getSortFilm = (films, sortName) => {
+  const topFilms = films.sort((a, b) => {
+    if (sortName === 'rating') {
+      return b.film_info.total_rating - a.film_info.total_rating;
+    } else {
+      return b.film_info.comments.length - a.film_info.comments.length;
+    }
+  });
+  return topFilms;
 };

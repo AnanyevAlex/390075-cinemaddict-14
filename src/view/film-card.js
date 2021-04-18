@@ -1,6 +1,6 @@
-import {isWatch, isInWatchlist, isFavorite, getTimeFromMins, dateRelese} from '../utils';
+import {isWatch, isInWatchlist, isFavorite, getTimeFromMins, dateRelese, createElement} from '../utils';
 
-export const createFilmCardTemplate = (film) => {
+const createFilmCardTemplate = (film) => {
   const { film_info, user_details } = film;
 
   return `<article class="film-card">
@@ -21,3 +21,27 @@ export const createFilmCardTemplate = (film) => {
           </div>
         </article>`;
 };
+
+
+export default class FilmCard {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

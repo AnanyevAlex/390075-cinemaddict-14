@@ -1,4 +1,4 @@
-import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils';
+import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked, createElement} from '../utils';
 
 const createCommentsTemplate = (comments) => {
   return `
@@ -33,7 +33,7 @@ const createGenresTemplate = (genres) => {
             </tr>`;
 };
 
-export const createPopupFilmInfo = (film) => {
+const createPopupFilmInfo = (film) => {
   const { film_info, user_details } = film;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -144,3 +144,26 @@ export const createPopupFilmInfo = (film) => {
   </form>
 </section>`;
 };
+
+export default class PopupFilmInfo {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPopupFilmInfo(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

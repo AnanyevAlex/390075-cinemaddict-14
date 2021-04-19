@@ -1,4 +1,5 @@
-import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked, createElement} from '../utils';
+import AbstractView from './abstract';
+import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils';
 
 const createCommentsTemplate = (comments) => {
   return `
@@ -145,25 +146,13 @@ const createPopupFilmInfo = (film) => {
 </section>`;
 };
 
-export default class PopupFilmInfo {
+export default class PopupFilmInfo extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createPopupFilmInfo(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

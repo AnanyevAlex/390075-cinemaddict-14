@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {POSTER_LINK, EMOTION, COUNTRY, DIRECTORS, AGE_RATING} from '../const';
-import {getRandomInteger, getRandomItem, generateDate, getRandomItems} from '../utils';
+import {getRandomInteger} from '../utils/common';
+import {getRandomItem, generateDate, getRandomItems} from '../utils/film';
 
 const generateFilmTitle = () => {
   const title = [

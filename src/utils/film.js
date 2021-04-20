@@ -1,27 +1,5 @@
 import dayjs from 'dayjs';
-
-export const RenderPosition = {
-  BEFOREEND: 'beforeend',
-  AFTEREND: 'afterend',
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTEREND:
-      container.after(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
-export const createElement = (template) => {
-  const newElement = document.createElement('div');
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
+import { getRandomInteger} from './common';
 
 export const dateRelese = (date, type) => {
   return type === 'year' ? dayjs(date).format('YYYY') : dayjs(date).format('D-MMMM-YYYY');
@@ -29,13 +7,6 @@ export const dateRelese = (date, type) => {
 
 export const getCommentDate = (date) => {
   return dayjs(date).format('YYYY/MM/D HH:MM' );
-};
-
-export const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
 export const getRandomItem = (array) => {

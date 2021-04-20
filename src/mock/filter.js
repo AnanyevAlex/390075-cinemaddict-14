@@ -1,4 +1,4 @@
-import {isWatch, isInWatchlist, isFavorite} from '../utils';
+import {isWatch, isInWatchlist, isFavorite} from '../utils/film';
 
 const filmToFilterMap = {
   watchlist: (films) => films.filter((film) => isInWatchlist(film.user_details.watchlist)).length,

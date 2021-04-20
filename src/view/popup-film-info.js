@@ -1,5 +1,5 @@
 import AbstractView from './abstract';
-import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils';
+import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils/film';
 
 const createCommentsTemplate = (comments) => {
   return `
@@ -150,9 +150,20 @@ export default class PopupFilmInfo extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createPopupFilmInfo(this._film);
+  }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._editClickHandler);
   }
 }

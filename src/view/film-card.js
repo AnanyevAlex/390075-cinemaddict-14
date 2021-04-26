@@ -1,12 +1,12 @@
 import AbstractView from './abstract';
-import {isWatch, isInWatchlist, isFavorite, getTimeFromMins, dateRelese} from '../utils/film';
+import {isWatch, isWatched, isFavorite, getTimeFromMins, dateRelese} from '../utils/film';
 
 const createFilmCardTemplate = (film) => {
-  const { film_info, user_details } = film;
+  const { film_info, userDetails } = film;
 
   return `<article class="film-card">
           <h3 class="film-card__title">${film_info.titles.title}</h3>
-          <p class="film-card__rating">${film_info.total_rating}</p>
+          <p class="film-card__rating">${film_info.totalRating}</p>
           <p class="film-card__info">
             <span class="film-card__year">${dateRelese(film_info.release.date, 'year')}</span>
             <span class="film-card__duration">${getTimeFromMins(film_info.runtime)}</span>
@@ -16,9 +16,9 @@ const createFilmCardTemplate = (film) => {
           <p class="film-card__description">${film_info.description}</p>
           <a class="film-card__comments">${film_info.comments.length} comments</a>
           <div class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isInWatchlist(user_details.watchlist)}" type="button">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatch(user_details.already_watched)}" type="button">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite ${isFavorite(user_details.favorite)}" type="button">Mark as favorite</button>
+            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isWatch(film) ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>
+            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatched(film) ? 'film-card__controls-item--active' : ''}" type="button">Mark as watched</button>
+            <button class="film-card__controls-item button film-card__controls-item--favorite ${isFavorite(film) ? 'film-card__controls-item--active' : ''}" type="button">Mark as favorite</button>
           </div>
         </article>`;
 };

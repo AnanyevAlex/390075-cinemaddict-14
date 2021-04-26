@@ -121,25 +121,25 @@ export const generateMovie = () => {
     film_info: {
       poster: getRandomItem(POSTER_LINK),
       titles: generateFilmTitle(),
-      total_rating: generateTotalRating(),
-      age_rating: getRandomItem(AGE_RATING),
+      totalRating: generateTotalRating(),
+      ageRating: getRandomItem(AGE_RATING),
       director: getRandomItem(DIRECTORS),
       writers: generateWrites(),
       actors: generateActors(),
       release: {
         date: generateDate(),
-        release_country: getRandomItem(COUNTRY),
+        releaseCountry: getRandomItem(COUNTRY),
       },
       comments: [ generateComments(1), generateComments(1)],
       runtime: generateRuntime(),
       genre: generateGenre(),
       description: generateDesc(),
     },
-    user_details: {
+    userDetails: {
       watchlist: Boolean(getRandomInteger(0, 1)),
-      already_watched: Boolean(getRandomInteger(0, 1)),
+      alreadyWatched: Boolean(getRandomInteger(0, 1)),
       favorite: Boolean(getRandomInteger(0, 1)),
-      watching_date: generateWatchDate(),
+      watchingDate: generateWatchDate(),
     },
   };
 };

@@ -35,7 +35,7 @@ const createGenresTemplate = (genres) => {
 };
 
 const createPopupFilmInfo = (film) => {
-  const { film_info, user_details } = film;
+  const { film_info, userDetails } = film;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -46,7 +46,7 @@ const createPopupFilmInfo = (film) => {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${film_info.poster}" alt="">
 
-          <p class="film-details__age">${film_info.age_rating}</p>
+          <p class="film-details__age">${film_info.ageRating}</p>
         </div>
 
         <div class="film-details__info">
@@ -57,7 +57,7 @@ const createPopupFilmInfo = (film) => {
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${film_info.total_rating}</p>
+              <p class="film-details__total-rating">${film_info.totalRating}</p>
             </div>
           </div>
 
@@ -84,7 +84,7 @@ const createPopupFilmInfo = (film) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${film_info.release.release_country}</td>
+              <td class="film-details__cell">${film_info.release.releaseCountry}</td>
             </tr>
             ${createGenresTemplate(film_info.genre)}
           </table>
@@ -94,13 +94,13 @@ const createPopupFilmInfo = (film) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" ${isChecked(user_details.watchlist)} id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${isChecked(userDetails.watchlist)} id="watchlist" name="watchlist">
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" ${isChecked(user_details.watcalready_watchedhlist)} id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${isChecked(userDetails.alreadyWatched)} id="watched" name="watched">
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" ${isChecked(user_details.favorite)} id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${isChecked(userDetails.favorite)} id="favorite" name="favorite">
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
@@ -162,7 +162,7 @@ export default class PopupFilmInfo extends AbstractView {
     evt.preventDefault();
     this._callback.editClick();
   }
-  setEditClickHandler(callback) {
+  setCloseHandler(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._editClickHandler);
   }

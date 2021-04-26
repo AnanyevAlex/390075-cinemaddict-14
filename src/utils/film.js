@@ -28,17 +28,17 @@ export const generateDate = () => {
   return dayjs().add(daysGap, 'day').toDate();
 };
 
-export const isWatch = (watch) => {
-  return watch === true ? 'film-card__controls-item--active' : '';
-};
+export const isWatch = (film) => {
+  return film.userDetails.alreadyWatched
+}
 
-export const isInWatchlist = (watchlist) => {
-  return watchlist === true ? 'film-card__controls-item--active' : '';
-};
+export const isWatched = (film) => {
+  return film.userDetails.watchlist
+}
 
-export const isFavorite = (favorite) => {
-  return favorite === true ? 'film-card__controls-item--active' : '';
-};
+export const isFavorite = (film) => {
+  return film.userDetails.favorite
+}
 
 export const getTimeFromMins = (mins) => {
   const hours = Math.trunc(mins/60);
@@ -57,7 +57,7 @@ export const isChecked = (boolean) => {
 export const getSortFilm = (films, sortName) => {
   const topFilms = films.sort((a, b) => {
     if (sortName === 'rating') {
-      return b.film_info.total_rating - a.film_info.total_rating;
+      return b.film_info.totalRating - a.film_info.totalRating;
     } else {
       return b.film_info.comments.length - a.film_info.comments.length;
     }

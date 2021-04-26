@@ -5,7 +5,7 @@ import {render, RenderPosition} from './utils/render';
 
 import FilmPresenter from './presenter/films';
 
-const FILM_COUNT = 120;
+const FILM_COUNT = 5;
 
 // фильтрация фильмов
 const films = new Array(FILM_COUNT).fill().map(generateMovie);
@@ -21,4 +21,4 @@ const footerStatisticsBlock = footerBlock.querySelector('.footer__statistics');
 
 render (footerStatisticsBlock, new FooterStatisticsView(FILM_COUNT), RenderPosition.BEFOREEND);
 
-filmPresenter.init(films, filters)
+filmPresenter.init(films, filters);

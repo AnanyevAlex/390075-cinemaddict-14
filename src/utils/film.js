@@ -29,16 +29,16 @@ export const generateDate = () => {
 };
 
 export const isWatch = (film) => {
-  return film.userDetails.alreadyWatched
-}
+  return film.userDetails.watchlist;
+};
 
 export const isWatched = (film) => {
-  return film.userDetails.watchlist
-}
+  return film.userDetails.alreadyWatched;
+};
 
 export const isFavorite = (film) => {
-  return film.userDetails.favorite
-}
+  return film.userDetails.favorite;
+};
 
 export const getTimeFromMins = (mins) => {
   const hours = Math.trunc(mins/60);

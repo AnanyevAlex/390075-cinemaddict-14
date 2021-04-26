@@ -2,7 +2,7 @@ import AbstractView from './abstract';
 import {isWatch, isWatched, isFavorite, getTimeFromMins, dateRelese} from '../utils/film';
 
 const createFilmCardTemplate = (film) => {
-  const { film_info, userDetails } = film;
+  const { film_info } = film;
 
   return `<article class="film-card">
           <h3 class="film-card__title">${film_info.titles.title}</h3>
@@ -30,6 +30,9 @@ export default class FilmCard extends AbstractView {
     this._film = film;
 
     this._editClickHandler = this._editClickHandler.bind(this);
+    this._handleAddToWatched = this._handleAddToWatched.bind(this);
+    this._handleAddToWatchList = this._handleAddToWatchList.bind(this);
+    this._handleAddToFavorites = this._handleAddToFavorites.bind(this);
   }
 
   getTemplate() {
@@ -41,7 +44,37 @@ export default class FilmCard extends AbstractView {
     this._callback.editClick();
   }
 
-  setEditClickHandler(callback) {
+  _handleAddToWatchList (evt) {
+    evt.preventDefault();
+    this._callback.onAddToWatchListClick();
+  }
+
+  _handleAddToFavorites (evt) {
+    evt.preventDefault();
+    this._callback.addToFavoritesClick();
+  }
+
+  _handleAddToWatched (evt) {
+    evt.preventDefault();
+    this._callback.addToWatchedClick();
+  }
+
+  setFilmCardWatchListClick (callback) {
+    this._callback.onAddToWatchListClick = callback;
+    this.getElement().querySelector('.film-card__controls-item--add-to-watchlist').addEventListener('click', this._handleAddToWatchList);
+  }
+
+  setFilmCardFavoritsClick (callback) {
+    this._callback.addToFavoritesClick = callback;
+    this.getElement().querySelector('.film-card__controls-item--favorite').addEventListener('click', this._handleAddToFavorites);
+  }
+
+  setFilmCardWatchedClick (callback) {
+    this._callback.addToWatchedClick = callback;
+    this.getElement().querySelector('.film-card__controls-item--mark-as-watched').addEventListener('click', this._handleAddToWatched);
+  }
+
+  setFilmCardClick(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelectorAll('.film-card__poster, .film-card__title, .film-card__comments').forEach((item) => {
       item.addEventListener('click', this._editClickHandler);

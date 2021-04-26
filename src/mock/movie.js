@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 import {POSTER_LINK, EMOTION, COUNTRY, DIRECTORS, AGE_RATING} from '../const';
 import {getRandomInteger} from '../utils/common';
 import {getRandomItem, generateDate, getRandomItems} from '../utils/film';
@@ -117,7 +118,7 @@ export const generateComments = (id) => {
 
 export const generateMovie = () => {
   return {
-    id: null,
+    id: nanoid(),
     film_info: {
       poster: getRandomItem(POSTER_LINK),
       titles: generateFilmTitle(),

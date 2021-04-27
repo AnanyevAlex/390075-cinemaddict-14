@@ -65,20 +65,20 @@ export default class MovieList {
   }
 
   _renderHeader() {
-    render(this._movieListHeader, this._headerComponent, RenderPosition.BEFOREEND);
+    render(this._movieListHeader, this._headerComponent);
   }
 
   _renderNav() {
     this._navComponent = new NavView(this._filters);
-    render(this._movieListContainer, this._navComponent, RenderPosition.BEFOREEND);
+    render(this._movieListContainer, this._navComponent);
   }
 
   _renderSort() {
-    render(this._movieListContainer, this._sortComponent, RenderPosition.BEFOREEND);
+    render(this._movieListContainer, this._sortComponent);
   }
 
   _renderNoFilms() {
-    render (this._filmList, this._noFilmsComponent, RenderPosition.BEFOREEND);
+    render (this._filmList, this._noFilmsComponent);
   }
 
   _renderFilm(container, film) {
@@ -129,21 +129,21 @@ export default class MovieList {
   }
 
   _renderLoadMoreBtn() {
-    render(this._filmList, this._loadMoreBtnComponent, RenderPosition.BEFOREEND);
+    render(this._filmList, this._loadMoreBtnComponent);
 
     this._loadMoreBtnComponent.setClickHandler(this._handleLoadMoreBtnClick);
   }
 
   _renderExtraFilmBlock() {
     for (let i = 0; i < FILM_EXTRA_BLOCK_COUNT; i++) {
-      render(this._filmBlock, new FilmExtraBlockView(), RenderPosition.BEFOREEND);
+      render(this._filmBlock, new FilmExtraBlockView());
     }
     const [topRateFilmsBlock, mostCommentedFilmsBlock] = this._filmBlock.querySelectorAll('.films-list.films-list--extra');
 
-    render(topRateFilmsBlock, new TopRatedTitleView(), RenderPosition.BEFOREEND);
-    render(mostCommentedFilmsBlock, new MostCommentedTitleView(), RenderPosition.BEFOREEND);
-    render(topRateFilmsBlock, new FilmListContainerView(), RenderPosition.BEFOREEND);
-    render(mostCommentedFilmsBlock, new FilmListContainerView(), RenderPosition.BEFOREEND);
+    render(topRateFilmsBlock, new TopRatedTitleView());
+    render(mostCommentedFilmsBlock, new MostCommentedTitleView());
+    render(topRateFilmsBlock, new FilmListContainerView());
+    render(mostCommentedFilmsBlock, new FilmListContainerView());
 
     this._renderExtraFilms(topRateFilmsBlock, mostCommentedFilmsBlock);
   }
@@ -175,13 +175,13 @@ export default class MovieList {
       return;
     }
     this._renderSort();
-    render(this._movieListContainer, this._filmBlockComponent, RenderPosition.BEFOREEND);
+    render(this._movieListContainer, this._filmBlockComponent);
 
     this._filmBlock = this._movieListContainer.querySelector('.films');
     this._filmList = this._movieListContainer.querySelector('.films-list');
 
-    render(this._filmBlock, this._filmListComponent, RenderPosition.BEFOREEND);
-    render(this._filmList, this._filmListComponent, RenderPosition.BEFOREEND);
+    render(this._filmBlock, this._filmListComponent);
+    render(this._filmList, this._filmListComponent);
 
     this._renderFilmList();
 

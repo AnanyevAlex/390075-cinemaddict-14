@@ -1,7 +1,7 @@
 import FilmCardView from '../view/film-card';
 import PopupFilmInfoView from '../view/popup-film-info';
 import {deepClone} from '../utils/common';
-import { render, RenderPosition, replace, remove } from '../utils/render';
+import { render, replace, remove } from '../utils/render';
 
 const PopupControlType = {
   FAVORITE: 'favorite',
@@ -36,23 +36,25 @@ export default class Movie {
     this._handleChangePopupControlButton = this._handleChangePopupControlButton.bind(this);
   }
 
-  init(films, popupStatus = PopupStatus.CLOSE) {
+  init(film, popupStatus = PopupStatus.CLOSE) {
 
-    this._film = films;
+    this._film = film;
 
     const prevFilmCardComponent = this._filmCardComponent;
     const prevPopupComponent = this._filmPopupComponent;
     this._popupStatus = popupStatus;
-    this._filmCardComponent = new FilmCardView(films);
+    this._filmCardComponent = new FilmCardView(film);
     this._filmPopupComponent = new PopupFilmInfoView(this._film);
 
     this._filmCardComponent.setFilmCardClick(this._handleOpenPopup);
     this._filmCardComponent.setFilmCardWatchListClick(this._handleAddToWatchList);
     this._filmCardComponent.setFilmCardFavoritsClick(this._handleAddToFavorits);
     this._filmCardComponent.setFilmCardWatchedClick(this._handleAddToWatched);
+    this._filmPopupComponent.setCloseHandler(this._closePopup);
+    this._filmPopupComponent.setPopupControlChange(this._handleChangePopupControlButton);
 
     if (prevFilmCardComponent === null || prevPopupComponent === null) {
-      render(this._filmContainer, this._filmCardComponent, RenderPosition.BEFOREEND);
+      render(this._filmContainer, this._filmCardComponent);
       return;
     }
 
@@ -61,21 +63,15 @@ export default class Movie {
     }
 
     if (this._popupStatus === PopupStatus.OPEN) {
-      this._filmPopupComponent = prevPopupComponent;
-      return;
+      if (document.body.contains(prevPopupComponent.getElement())) {
+        replace(this._filmPopupComponent, prevPopupComponent);
+      }
     }
-
-    if (this._filmContainer.contains(prevPopupComponent.getElement())) {
-      replace(this._filmPopupComponent, prevPopupComponent);
-    }
-
     remove(prevFilmCardComponent);
     remove(prevPopupComponent);
-
-
   }
 
-  resetFilmView () {
+  resetFilmView() {
     if (this._popupStatus === PopupStatus.OPEN) {
       this._closePopup();
       this._popupStatus = PopupStatus.CLOSE;
@@ -83,16 +79,14 @@ export default class Movie {
   }
 
   _openPopup() {
-    render(this._footerBlock, this._filmPopupComponent, RenderPosition.AFTEREND);
+    render(document.body, this._filmPopupComponent);
     document.addEventListener('keydown', this._escKeyDownHandler);
-    this._filmPopupComponent.setCloseHandler(this._closePopup);
-    this._filmPopupComponent.setPopupControlChange( this._handleChangePopupControlButton);
     this._bodyElement.classList.add('hide-overflow');
   }
 
   _closePopup() {
     this._filmPopupComponent.getElement().remove();
-    this._filmPopupComponent.removeElement();
+    // this._filmPopupComponent.removeElement();
     this._popupStatus = PopupStatus.CLOSE;
     this._bodyElement.classList.remove('hide-overflow');
   }
@@ -111,25 +105,25 @@ export default class Movie {
     this._openPopup();
   }
 
-  _updateFilmCardUserInfo (updateKey) {
+  _updateFilmCardUserInfo(updateKey) {
     this._updateFilmCard = deepClone(this._film);
     this._updateFilmCard.userDetails[updateKey] = !this._updateFilmCard.userDetails[updateKey];
     this._handleChangeData(this._updateFilmCard, this._popupStatus);
   }
 
-  _handleAddToWatchList () {
+  _handleAddToWatchList() {
     this._updateFilmCardUserInfo('watchlist');
   }
 
-  _handleAddToFavorits () {
+  _handleAddToFavorits() {
     this._updateFilmCardUserInfo('favorite');
   }
 
-  _handleAddToWatched () {
+  _handleAddToWatched() {
     this._updateFilmCardUserInfo('alreadyWatched');
   }
 
-  _handleChangePopupControlButton (buttonType) {
+  _handleChangePopupControlButton(buttonType) {
     if (buttonType === PopupControlType.WATCHLIST) {
       this._updateFilmCardUserInfo('watchlist');
     }

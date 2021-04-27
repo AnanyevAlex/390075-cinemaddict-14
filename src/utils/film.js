@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { getRandomInteger} from './common';
+import {getRandomInteger} from './common';
 
 export const dateRelese = (date, type) => {
   return type === 'year' ? dayjs(date).format('YYYY') : dayjs(date).format('D-MMMM-YYYY');

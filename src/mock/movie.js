@@ -119,7 +119,7 @@ export const generateComments = (id) => {
 export const generateMovie = () => {
   return {
     id: nanoid(),
-    film_info: {
+    filmInfo: {
       poster: getRandomItem(POSTER_LINK),
       titles: generateFilmTitle(),
       totalRating: generateTotalRating(),

@@ -57,10 +57,34 @@ export const isChecked = (boolean) => {
 export const getSortFilm = (films, sortName) => {
   const topFilms = films.sort((a, b) => {
     if (sortName === 'rating') {
-      return b.film_info.totalRating - a.film_info.totalRating;
+      return b.filmInfo.totalRating - a.filmInfo.totalRating;
     } else {
-      return b.film_info.comments.length - a.film_info.comments.length;
+      return b.filmInfo.comments.length - a.filmInfo.comments.length;
     }
   });
   return topFilms;
+};
+
+const getWeightForNullDate = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return 0;
+  }
+
+  if (dateA === null) {
+    return 1;
+  }
+
+  if (dateB === null) {
+    return -1;
+  }
+};
+
+export const sortDateUp = (filmA, filmB) => {
+  const weight = getWeightForNullDate(filmA.filmInfo.release.date, filmB.filmInfo.release.date);
+
+  if (weight !== null) {
+    return weight;
+  }
+
+  return dayjs(filmA.filmInfo.release.date).diff(dayjs(filmB.filmInfo.release.date));
 };

@@ -35,7 +35,7 @@ const createGenresTemplate = (genres) => {
 };
 
 const createPopupFilmInfo = (film) => {
-  const { film_info, userDetails } = film;
+  const { filmInfo, userDetails } = film;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -44,52 +44,52 @@ const createPopupFilmInfo = (film) => {
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="${film_info.poster}" alt="">
+          <img class="film-details__poster-img" src="${filmInfo.poster}" alt="">
 
-          <p class="film-details__age">${film_info.ageRating}</p>
+          <p class="film-details__age">${filmInfo.ageRating}</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
-              <h3 class="film-details__title">${film_info.titles.title}</h3>
-              <p class="film-details__title-original">${film_info.titles.altTitle}</p>
+              <h3 class="film-details__title">${filmInfo.titles.title}</h3>
+              <p class="film-details__title-original">${filmInfo.titles.altTitle}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${film_info.totalRating}</p>
+              <p class="film-details__total-rating">${filmInfo.totalRating}</p>
             </div>
           </div>
 
           <table class="film-details__table">
             <tr class="film-details__row">
               <td class="film-details__term">Director</td>
-              <td class="film-details__cell">${film_info.director}</td>
+              <td class="film-details__cell">${filmInfo.director}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${getStringOFArray(film_info.writers)}</td>
+              <td class="film-details__cell">${getStringOFArray(filmInfo.writers)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${getStringOFArray(film_info.actors)}</td>
+              <td class="film-details__cell">${getStringOFArray(filmInfo.actors)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${dateRelese(film_info.release.date)}</td>
+              <td class="film-details__cell">${dateRelese(filmInfo.release.date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${getTimeFromMins(film_info.runtime)}</td>
+              <td class="film-details__cell">${getTimeFromMins(filmInfo.runtime)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${film_info.release.releaseCountry}</td>
+              <td class="film-details__cell">${filmInfo.release.releaseCountry}</td>
             </tr>
-            ${createGenresTemplate(film_info.genre)}
+            ${createGenresTemplate(filmInfo.genre)}
           </table>
 
-          <p class="film-details__film-description">${film_info.description}</p>
+          <p class="film-details__film-description">${filmInfo.description}</p>
         </div>
       </div>
 
@@ -107,9 +107,9 @@ const createPopupFilmInfo = (film) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${film_info.comments.length}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${filmInfo.comments.length}</span></h3>
 
-        ${createCommentsTemplate(film_info.comments)}
+        ${createCommentsTemplate(filmInfo.comments)}
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label"></div>

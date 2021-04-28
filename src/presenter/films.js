@@ -8,10 +8,12 @@ import FilmExtraBlockView from '../view/film-extra-block';
 import TopRatedTitleView from '../view/top-rated-title';
 import MostCommentedTitleView from '../view/most-commented-title';
 import NoFilmsView from '../view/no-films';
-import {render, RenderPosition, remove} from '../utils/render';
+import {render, remove} from '../utils/render';
 import {getSortFilm} from '../utils/film';
 import FilmsCardPresenter from './films-card.js';
 import {updateItem} from '../utils/common';
+import {SortType} from '../const';
+import {sortDateUp} from '../utils/film';
 
 const FILM_COUNT_PER_STEP = 5;
 const FILM_EXTRA_BLOCK_COUNT = 2;
@@ -22,6 +24,7 @@ export default class MovieList {
     this._movieListHeader = headerContainer;
     this._movieListContainer = mainContainer;
     this._renderFilmCount = FILM_COUNT_PER_STEP;
+    this._currentSortType = SortType.DEFAULT;
 
     this._headerComponent = new HeaderView();
     this._sortComponent = new SortView();
@@ -39,10 +42,12 @@ export default class MovieList {
     this._handleChangeData = this._handleChangeData.bind(this);
     this._handleChangePopup = this._handleChangePopup.bind(this);
     this._handleLoadMoreBtnClick = this._handleLoadMoreBtnClick.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
   init(films, filters) {
 
-    this._films = films;
+    this._films = films.slice();
+    this._sourceFilms = films.slice();
     this._filters = filters;
     this._renderHeader();
     this._renderNav();
@@ -50,7 +55,7 @@ export default class MovieList {
   }
 
   _handleChangeData(updateFilmCard, popupStatus) {
-    this._films = updateItem(this._films, updateFilmCard);
+    this._sourceFilms = updateItem(this._films, updateFilmCard);
     if (updateFilmCard.id in this._mainFilmCardPresenters) {
       this._mainFilmCardPresenters[updateFilmCard.id].init(updateFilmCard, popupStatus);
     }
@@ -73,8 +78,29 @@ export default class MovieList {
     render(this._movieListContainer, this._navComponent);
   }
 
+  _sortFilms(sortType) {
+    switch (sortType) {
+      case SortType.DATE:
+        this._films.sort(sortDateUp);
+        break;
+      default:
+        this._films = this._sourceFilms.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+    this._sortFilms(sortType);
+    this._clearFilmCard();
+  }
+
   _renderSort() {
     render(this._movieListContainer, this._sortComponent);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderNoFilms() {
@@ -110,6 +136,7 @@ export default class MovieList {
   }
 
   _clearFilmCard () {
+    console.log('2')
     Object.values(this._mainFilmCardPresenters)
       .forEach((filmCard) => {
         filmCard.destroy();});

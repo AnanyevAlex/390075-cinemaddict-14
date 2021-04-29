@@ -99,7 +99,7 @@ export default class MovieList {
     }
     this._sortFilms(sortType);
     this._clearFilmCard();
-    // this._renderFilms(this._filmListContainer, this._films, 0, Math.min(this._films.length, FILM_COUNT_PER_STEP));
+    this._renderFilms(this._filmListContainer, this._films, 0, Math.min(this._films.length, FILM_COUNT_PER_STEP));
   }
 
   _renderSort() {
@@ -140,7 +140,6 @@ export default class MovieList {
   }
 
   _clearFilmCard () {
-    console.log(Object.values(this._mainFilmCardPresenters))
     Object.values(this._mainFilmCardPresenters)
       .forEach((filmCard) => {
         filmCard.destroy();});

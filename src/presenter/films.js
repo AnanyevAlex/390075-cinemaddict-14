@@ -45,7 +45,6 @@ export default class MovieList {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
   init(films, filters) {
-
     this._films = films.slice();
     this._sourceFilms = films.slice();
     this._filters = filters;
@@ -189,7 +188,6 @@ export default class MovieList {
 
   _renderFilmList() {
     this._filmListContainer = this._movieListContainer.querySelector('.films-list__container');
-
     this._renderFilms(this._filmListContainer, this._films, 0, Math.min(this._films.length, FILM_COUNT_PER_STEP));
 
     if (this._films.length > FILM_COUNT_PER_STEP) {

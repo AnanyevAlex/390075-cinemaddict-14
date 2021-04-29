@@ -65,31 +65,6 @@ export const getSortFilm = (films, sortName) => {
   return topFilms;
 };
 
-// const getWeightForNullDate = (dateA, dateB) => {
-//   if (dateA === null && dateB === null) {
-//     console.log('0')
-//     return 0;
-//   }
-//
-//   if (dateA === null) {
-//     console.log('1')
-//     return 1;
-//   }
-//
-//   if (dateB === null) {
-//     console.log('2')
-//     return -1;
-//   }
-// };
-
 export const sortDateUp = (filmA, filmB) => {
-  // const weight = getWeightForNullDate(filmA.filmInfo.release.date, filmB.filmInfo.release.date);
-
-  // if (weight !== null) {
-  //   console.log('test')
-  //   console.log(weight)
-  //   return weight;
-  // }
-
   return dayjs(filmB.filmInfo.release.date).diff(dayjs(filmA.filmInfo.release.date));
 };

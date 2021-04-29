@@ -83,6 +83,9 @@ export default class MovieList {
       case SortType.DATE:
         this._films.sort(sortDateUp);
         break;
+      case SortType.RATE:
+        this._films = getSortFilm(this._films, 'rating');
+        break;
       default:
         this._films = this._sourceFilms.slice();
     }
@@ -96,6 +99,7 @@ export default class MovieList {
     }
     this._sortFilms(sortType);
     this._clearFilmCard();
+    // this._renderFilms(this._filmListContainer, this._films, 0, Math.min(this._films.length, FILM_COUNT_PER_STEP));
   }
 
   _renderSort() {
@@ -136,7 +140,7 @@ export default class MovieList {
   }
 
   _clearFilmCard () {
-    console.log('2')
+    console.log(Object.values(this._mainFilmCardPresenters))
     Object.values(this._mainFilmCardPresenters)
       .forEach((filmCard) => {
         filmCard.destroy();});
@@ -146,10 +150,9 @@ export default class MovieList {
   }
 
   _handleLoadMoreBtnClick() {
-    this._films
-      .slice(this._renderFilmCount, this._renderFilmCount + FILM_COUNT_PER_STEP)
-      .forEach((film) => this._renderFilm(this._filmListContainer, film));
+    this._renderFilms(this._filmListContainer, this._films, this._renderFilmCount, this._renderFilmCount + FILM_COUNT_PER_STEP);
     this._renderFilmCount += FILM_COUNT_PER_STEP;
+
     if (this._renderFilmCount >= this._films.length) {
       remove(this._loadMoreBtnComponent);
     }

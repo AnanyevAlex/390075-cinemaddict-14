@@ -5,7 +5,7 @@ import {render} from './utils/render';
 
 import FilmPresenter from './presenter/films';
 
-const FILM_COUNT = 5;
+const FILM_COUNT = 15;
 
 // фильтрация фильмов
 const films = new Array(FILM_COUNT).fill().map(generateMovie);

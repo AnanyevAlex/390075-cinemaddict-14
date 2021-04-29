@@ -136,4 +136,7 @@ export default class Movie {
       this._updateFilmCardUserInfo('alreadyWatched');
     }
   }
+  destroy() {
+    remove(this._filmCardComponent);
+  }
 }

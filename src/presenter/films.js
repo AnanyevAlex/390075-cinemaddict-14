@@ -44,6 +44,7 @@ export default class MovieList {
     this._handleLoadMoreBtnClick = this._handleLoadMoreBtnClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
+
   init(films, filters) {
     this._films = films.slice();
     this._sourceFilms = films.slice();
@@ -54,7 +55,9 @@ export default class MovieList {
   }
 
   _handleChangeData(updateFilmCard, popupStatus) {
-    this._sourceFilms = updateItem(this._films, updateFilmCard);
+    this._sourceFilms = updateItem(this._sourceFilms, updateFilmCard);
+    this._films = updateItem(this._films, updateFilmCard);
+
     if (updateFilmCard.id in this._mainFilmCardPresenters) {
       this._mainFilmCardPresenters[updateFilmCard.id].init(updateFilmCard, popupStatus);
     }
@@ -99,6 +102,7 @@ export default class MovieList {
     this._sortFilms(sortType);
     this._clearFilmCard();
     this._renderFilms(this._filmListContainer, this._films, 0, Math.min(this._films.length, FILM_COUNT_PER_STEP));
+    this._renderLoadMoreBtn();
   }
 
   _renderSort() {
@@ -107,7 +111,7 @@ export default class MovieList {
   }
 
   _renderNoFilms() {
-    render (this._filmList, this._noFilmsComponent);
+    render(this._filmList, this._noFilmsComponent);
   }
 
   _renderFilm(container, film) {
@@ -116,7 +120,7 @@ export default class MovieList {
   }
 
   _renderFilms(container, films, from, to, typePresenter) {
-    films.slice(from, to).forEach((film) =>{
+    films.slice(from, to).forEach((film) => {
       this._renderFilm(container, film);
       if (typePresenter === 'rate') {
         this._topratingFilmCardPresenter[film.id] = this._filmCardPresenter;
@@ -128,20 +132,24 @@ export default class MovieList {
     });
   }
 
-  _handleChangePopup () {
+  _handleChangePopup() {
     [
-      ... Object.values(this._mainFilmCardPresenters),
-      ... Object.values(this._topCommentedFilmCardPresenter),
-      ... Object.values(this._topratingFilmCardPresenter),
+      ...Object.values(this._mainFilmCardPresenters),
+      ...Object.values(this._topCommentedFilmCardPresenter),
+      ...Object.values(this._topratingFilmCardPresenter),
     ]
       .forEach((filmCard) => {
-        filmCard.resetFilmView();});
+        filmCard.resetFilmView();
+      });
   }
 
-  _clearFilmCard () {
-    Object.values(this._mainFilmCardPresenters)
+  _clearFilmCard() {
+    Object.values([
+      ...Object.values(this._mainFilmCardPresenters),
+    ])
       .forEach((filmCard) => {
-        filmCard.destroy();});
+        filmCard.destroy();
+      });
     this._mainFilmCardPresenters = {};
     this._renderFilmCount = FILM_COUNT_PER_STEP;
     remove(this._loadMoreBtnComponent);
@@ -157,6 +165,9 @@ export default class MovieList {
   }
 
   _renderLoadMoreBtn() {
+    if (this._renderFilmCount >= this._films.length) {
+      return;
+    }
     render(this._filmList, this._loadMoreBtnComponent);
 
     this._loadMoreBtnComponent.setClickHandler(this._handleLoadMoreBtnClick);

@@ -1,5 +1,6 @@
-import AbstractView from './abstract';
+import SmartView from './smart';
 import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils/film';
+import {generateComments} from '../mock/movie';
 
 const createCommentsTemplate = (comments) => {
   return `
@@ -34,8 +35,8 @@ const createGenresTemplate = (genres) => {
             </tr>`;
 };
 
-const createPopupFilmInfo = (film) => {
-  const { filmInfo, userDetails } = film;
+const createPopupFilmInfo = (data) => {
+  const { filmInfo, userDetails, currentEmoji, currentTextComment } = data;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -112,10 +113,12 @@ const createPopupFilmInfo = (film) => {
         ${createCommentsTemplate(filmInfo.comments)}
 
         <div class="film-details__new-comment">
-          <div class="film-details__add-emoji-label"></div>
+          <div class="film-details__add-emoji-label">
+          ${currentEmoji ? `<img src="images/emoji/${currentEmoji}.png" width="55" height="55" alt="emoji-smile">`: ''}
+          </div>
 
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${!currentTextComment ? '' : currentTextComment}</textarea>
           </label>
 
           <div class="film-details__emoji-list">
@@ -146,17 +149,22 @@ const createPopupFilmInfo = (film) => {
 </section>`;
 };
 
-export default class PopupFilmInfo extends AbstractView {
+export default class PopupFilmInfo extends SmartView {
   constructor(film) {
     super();
-    this._film = film;
+    this._data = PopupFilmInfo.parseFilmCardToState(film);
+
 
     this._editClickHandler = this._editClickHandler.bind(this);
-    this._handlerControlButton = this._handlerControlButton.bind(this);
+    this._handleControlButton = this._handleControlButton.bind(this);
+    this._handleEmojiChange = this._handleEmojiChange.bind(this);
+    this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
+    this._handleSendNewComment = this._handleSendNewComment.bind(this);
+    this._setInnerHandlers();
   }
 
   getTemplate() {
-    return createPopupFilmInfo(this._film);
+    return createPopupFilmInfo(this._data);
   }
 
   _editClickHandler(evt) {
@@ -164,17 +172,74 @@ export default class PopupFilmInfo extends AbstractView {
     this._callback.editClick();
   }
 
-  _handlerControlButton(evt) {
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setPopupControlChange(this._callback.inputControlPopup);
+    this.setCloseHandler (this._callback.editClick);
+  }
+
+  reset(filmCard) {
+    this.updateData(
+      PopupFilmInfo.parseFilmCardToState(filmCard),
+    );
+  }
+
+  _setInnerHandlers() {
+    this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handleEmojiChange);
+    this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._descriptionInputHandler);
+    this.getElement().addEventListener('keydown', this._handleSendNewComment);
+  }
+
+  _handleControlButton(evt) {
     evt.preventDefault();
     this._callback.inputControlPopup(evt.target.id);
+  }
+  _handleEmojiChange (evt) {
+    evt.preventDefault();
+    this.updateData({currentEmoji: evt.target.value});
+  }
+  _descriptionInputHandler (evt) {
+    evt.preventDefault();
+    this.updateData({currentTextComment: evt.target.value}, true);
+  }
+  setPopupControlChange(callback) {
+    this._callback.inputControlPopup = callback;
+    this.getElement().querySelector('.film-details__controls').addEventListener('change', this._handleControlButton);
   }
   setCloseHandler(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._editClickHandler);
   }
 
-  setPopupControlChange (callback) {
-    this._callback.inputControlPopup = callback;
-    this.getElement().querySelector('.film-details__controls').addEventListener('change', this._handlerControlButton);
+  _handleSendNewComment(evt) {
+    if ((evt.ctrlKey || evt.metaKey) && evt.keyCode == 13) {
+      if ( !this._data.currentEmoji || !this._data.currentTextComment){
+        return;
+      }
+      this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
+      this.updateElement();
+    }
+  }
+
+  static parseFilmCardToState(filmCard) {
+    return Object.assign (
+      {},
+      filmCard,
+      {
+        currentEmoji: 'currentEmoji' in filmCard,
+        currentTextComment: '',
+      },
+    );
+  }
+
+  static parseStateToFilmCard(filmCard) {
+    filmCard = Object.assign({}, filmCard);
+    const newComment = generateComments();
+    newComment.comment = filmCard.currentTextComment;
+    newComment.emotion = filmCard.currentEmoji;
+    filmCard.filmInfo.comments.push(newComment);
+    delete filmCard.currentTextComment;
+    delete filmCard.currentEmoji;
+    return filmCard;
   }
 }

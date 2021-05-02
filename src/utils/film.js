@@ -55,7 +55,7 @@ export const isChecked = (boolean) => {
 };
 
 export const getSortFilm = (films, sortName) => {
-  const topFilms = films.sort((a, b) => {
+  const topFilms = films.slice().sort((a, b) => {
     if (sortName === 'rating') {
       return b.filmInfo.totalRating - a.filmInfo.totalRating;
     } else {

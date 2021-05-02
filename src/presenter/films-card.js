@@ -45,7 +45,6 @@ export default class Movie {
     this._popupStatus = popupStatus;
     this._filmCardComponent = new FilmCardView(film);
     this._filmPopupComponent = new PopupFilmInfoView(this._film);
-
     this._filmCardComponent.setFilmCardClick(this._handleOpenPopup);
     this._filmCardComponent.setFilmCardWatchListClick(this._handleAddToWatchList);
     this._filmCardComponent.setFilmCardFavoritsClick(this._handleAddToFavorits);
@@ -94,6 +93,7 @@ export default class Movie {
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this._filmPopupComponent.reset(this._film);
       this._closePopup(this._filmPopupComponent);
     }
   }

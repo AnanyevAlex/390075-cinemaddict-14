@@ -1,4 +1,8 @@
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 import {getRandomInteger} from './common';
 
 export const dateRelese = (date, type) => {
@@ -6,7 +10,7 @@ export const dateRelese = (date, type) => {
 };
 
 export const getCommentDate = (date) => {
-  return dayjs(date).format('YYYY/MM/D HH:MM' );
+  return dayjs(date).fromNow();
 };
 
 export const getRandomItem = (array) => {
@@ -41,9 +45,7 @@ export const isFavorite = (film) => {
 };
 
 export const getTimeFromMins = (mins) => {
-  const hours = Math.trunc(mins/60);
-  const minutes = mins % 60;
-  return hours + 'h ' + minutes + 'm';
+  return dayjs.duration(mins, 'minutes').format('HH[h] mm[m]');
 };
 
 export const getStringOFArray = (item) => {

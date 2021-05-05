@@ -20,7 +20,8 @@ const FILM_EXTRA_BLOCK_COUNT = 2;
 const CARD_FILM_EXTRA_COUNT = 2;
 
 export default class MovieList {
-  constructor(mainContainer, headerContainer) {
+  constructor(mainContainer, headerContainer, filmsModel) {
+    this._filmsModel = filmsModel;
     this._movieListHeader = headerContainer;
     this._movieListContainer = mainContainer;
     this._renderFilmCount = FILM_COUNT_PER_STEP;
@@ -52,6 +53,10 @@ export default class MovieList {
     this._renderHeader();
     this._renderNav();
     this._renderFilmBlock();
+  }
+
+  _getFilms() {
+    return this._filmsModel.getFilms();
   }
 
   _handleChangeData(updateFilmCard, popupStatus) {

@@ -1,6 +1,7 @@
 import SmartView from './smart';
 import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils/film';
 import {generateComments} from '../mock/movie';
+import he from 'he';
 
 const createCommentsTemplate = (comments) => {
   return `
@@ -11,11 +12,11 @@ const createCommentsTemplate = (comments) => {
         <img src="./images/emoji/${item.emotion}.png" width="55" height="55" alt="emoji-${item.emotion}">
       </span>
       <div>
-        <p class="film-details__comment-text">${item.comment}</p>
+        <p class="film-details__comment-text">${he.encode(item.comment)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${item.author}</span>
           <span class="film-details__comment-day">${getCommentDate(item.date)}</span>
-          <button class="film-details__comment-delete">Delete</button>
+          <button class="film-details__comment-delete" data-comment-id="${item.id}">Delete</button>
         </p>
       </div>
     </li>
@@ -160,6 +161,7 @@ export default class PopupFilmInfo extends SmartView {
     this._handleEmojiChange = this._handleEmojiChange.bind(this);
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);
     this._handleSendNewComment = this._handleSendNewComment.bind(this);
+    this._handleDeleteComment = this._handleDeleteComment.bind(this);
     this._setInnerHandlers();
   }
 
@@ -188,6 +190,7 @@ export default class PopupFilmInfo extends SmartView {
     this.getElement().querySelector('.film-details__emoji-list').addEventListener('change', this._handleEmojiChange);
     this.getElement().querySelector('.film-details__comment-input').addEventListener('input', this._descriptionInputHandler);
     this.getElement().addEventListener('keydown', this._handleSendNewComment);
+    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._handleDeleteComment);
   }
 
   _handleControlButton(evt) {
@@ -217,8 +220,25 @@ export default class PopupFilmInfo extends SmartView {
         return;
       }
       this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
+      this._callback.setSendNewComment(this._data);
       this.updateElement();
     }
+  }
+
+  _handleDeleteComment(evt) {
+    if (!evt.target.classList.contains('film-details__comment-delete')) {
+      return;
+    }
+    evt.preventDefault();
+    this._callback.deleteComment(evt.target.dataset.commentId);
+  }
+
+  setSendNewComment(callback) {
+    this._callback.setSendNewComment = callback;
+  }
+
+  setDeleteComment(callback) {
+    this._callback.deleteComment = callback;
   }
 
   static parseFilmCardToState(filmCard) {

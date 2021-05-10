@@ -131,7 +131,7 @@ export const generateMovie = () => {
         date: generateDate(),
         releaseCountry: getRandomItem(COUNTRY),
       },
-      comments: [ generateComments(1), generateComments(1)],
+      comments: [ generateComments(nanoid()), generateComments(nanoid())],
       runtime: generateRuntime(),
       genre: generateGenre(),
       description: generateDesc(),

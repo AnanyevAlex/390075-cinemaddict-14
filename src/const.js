@@ -36,3 +36,34 @@ export const SortType = {
   DATE: 'date',
   RATE: 'rate',
 };
+
+export const UserAction = {
+  UPDATE: 'update',
+  ADD_COMMENT: 'add comment',
+  DELETE_COMMENT: 'delete',
+};
+
+export const UpdateType = {
+  MINOR: 'minor',
+  MAJOR: 'major',
+  PATH: 'path',
+  INIT: 'init',
+};
+
+export const PopupControlType = {
+  FAVORITE: 'favorite',
+  WATCHLIST: 'watchlist',
+  WATCHED: 'watched',
+};
+
+export const PopupStatus = {
+  OPEN: 'open',
+  CLOSE: 'close',
+};
+
+export const FilterType = {
+  ALL: 'All movies',
+  WATCHLIST: 'Watchlist',
+  FAVORITES: 'Favorites',
+  HISTORY: 'History',
+};

@@ -62,8 +62,28 @@ export const PopupStatus = {
 };
 
 export const FilterType = {
-  ALL: 'All movies',
+  ALL_MOVIES: 'All movies',
   WATCHLIST: 'Watchlist',
   FAVORITES: 'Favorites',
   HISTORY: 'History',
+  STATS: 'Stats',
+};
+
+export const USER_STATUS = {
+  'none': {
+    FROM: 0,
+    TO: 0,
+  },
+  'novice': {
+    FROM: 1,
+    TO: 10,
+  },
+  'fan': {
+    FROM: 11,
+    TO: 20,
+  },
+  'movie buff': {
+    FROM: 21,
+    TO: 100,
+  },
 };

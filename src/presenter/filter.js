@@ -50,9 +50,9 @@ export default class Filter {
 
     return [
       {
-        type: FilterType.ALL,
-        name: 'All',
-        count: filter[FilterType.ALL](films).length,
+        type: FilterType.ALL_MOVIES,
+        name: 'All movies',
+        count: filter[FilterType.ALL_MOVIES](films).length,
       },
       {
         type: FilterType.FAVORITES,

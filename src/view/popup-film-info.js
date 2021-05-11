@@ -155,7 +155,6 @@ export default class PopupFilmInfo extends SmartView {
     super();
     this._data = PopupFilmInfo.parseFilmCardToState(film);
 
-
     this._editClickHandler = this._editClickHandler.bind(this);
     this._handleControlButton = this._handleControlButton.bind(this);
     this._handleEmojiChange = this._handleEmojiChange.bind(this);

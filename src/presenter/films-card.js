@@ -79,6 +79,7 @@ export default class Movie {
     this._filmPopupComponent.getElement().remove();
     this._popupStatus = PopupStatus.CLOSE;
     this._bodyElement.classList.remove('hide-overflow');
+    document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
   _escKeyDownHandler(evt) {
@@ -92,7 +93,6 @@ export default class Movie {
   _handleOpenPopup() {
     this._handleChangeView();
     this._popupStatus = PopupStatus.OPEN;
-    document.removeEventListener('keydown', this._escKeyDownHandler);
     this._openPopup();
   }
 
@@ -138,7 +138,7 @@ export default class Movie {
   _handleDeleteComment(commnetID) {
     const updatedFilmCard = deepClone(this._film);
     const comment = updatedFilmCard.filmInfo.comments.filter((comment) => comment.id !== commnetID);
-    updatedFilmCard.comments = comment;
+    updatedFilmCard.filmInfo.comments = comment;
     this._handleChangeData(UserAction.DELETE_COMMENT, UpdateType.PATH, updatedFilmCard, this._popupStatus);
   }
 }

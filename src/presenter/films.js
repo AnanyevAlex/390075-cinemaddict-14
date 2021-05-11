@@ -89,7 +89,7 @@ export default class MovieList {
     switch (updateType) {
       case FilterType.STATS:
         this._clearFilms({ resetRenderedCard: true, resetSortType: true });
-        document.querySelectorAll('.films-list.films-list--extra').forEach((item) => item.remove())
+        document.querySelectorAll('.films-list.films-list--extra').forEach((item) => item.remove());
         this._renderStatsComponent();
         replace(this._statsComponent,this._filmListComponent);
         break;

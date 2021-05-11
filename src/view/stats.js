@@ -35,7 +35,7 @@ const getWatchedStatistic = (watchedFilms) => {
   for (let i = 0; i < watchedFilms.length; i++) {
     const film = watchedFilms[i];
     watchingTime += film.filmInfo.runtime,
-      film.filmInfo.genre.forEach((elem) => genresStatistic[elem] = genresStatistic[elem] + 1 || 1);
+    film.filmInfo.genre.forEach((elem) => genresStatistic[elem] = genresStatistic[elem] + 1 || 1);
   }
 
   const topGenres = Object.entries(genresStatistic)

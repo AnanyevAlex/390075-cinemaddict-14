@@ -87,3 +87,11 @@ export const USER_STATUS = {
     TO: 100,
   },
 };
+
+export const PeriodOfStatistics = {
+  ALL: 'all-time',
+  TODAY: 'day',
+  WEEK: 'week',
+  MONTH: 'month',
+  YEAR: 'year',
+};

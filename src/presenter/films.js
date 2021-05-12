@@ -89,7 +89,6 @@ export default class MovieList {
     switch (updateType) {
       case FilterType.STATS:
         this._clearFilms({ resetRenderedCard: true, resetSortType: true });
-        document.querySelectorAll('.films-list.films-list--extra').forEach((item) => item.remove());
         this._renderStatsComponent();
         replace(this._statsComponent,this._filmListComponent);
         break;
@@ -110,19 +109,19 @@ export default class MovieList {
         break;
       case UpdateType.MINOR:
         this._clearFilms();
-        this._renderFilmList();
-        this._renderExtraFilms();
+        this._renderFilmBlock();
         break;
       case UpdateType.MAJOR:
+        this._clearFilms({ resetFilmCardCount: true, resetSortType: true});
         if (this._statsComponent !== null) {
           replace(this._filmListComponent,this._statsComponent);
           remove(this._statsComponent);
           this._statsComponent = null;
-          this._renderExtraFilmBlock();
+          this._renderFilmBlock();
+        } else {
+          this._renderFilmBlock();
+
         }
-        this._clearFilms({ resetFilmCardCount: true, resetSortType: true});
-        this._renderFilmList();
-        this._renderExtraFilms();
         break;
     }
   }
@@ -251,6 +250,10 @@ export default class MovieList {
       });
   }
 
+  _clearExtraFilmsBlock() {
+    document.querySelectorAll('.films-list.films-list--extra').forEach((item) => item.remove());
+  }
+
   _clearMainFilmsPresenters() {
     [
       ...Object.values(this._mainFilmCardPresenters),
@@ -264,6 +267,7 @@ export default class MovieList {
     const filmsCount = this._getFilms().length;
     this._clearExtraFilmsPresenters();
     this._clearMainFilmsPresenters();
+    this._clearExtraFilmsBlock();
     this._mainFilmCardPresenters = {};
     this._topCommentedFilmCardPresenter = {};
     this._topratingFilmCardPresenter = {};

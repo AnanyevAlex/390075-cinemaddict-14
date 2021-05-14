@@ -6,6 +6,7 @@ import FilmExtraBlockView from '../view/film-extra-block';
 import TopRatedTitleView from '../view/top-rated-title';
 import MostCommentedTitleView from '../view/most-commented-title';
 import NoFilmsView from '../view/no-films';
+import LoadingView from '../view/loading';
 import {render, remove, replace} from '../utils/render';
 import {getSortFilm} from '../utils/film';
 import FilmsCardPresenter from './films-card.js';
@@ -19,7 +20,7 @@ const FILM_EXTRA_BLOCK_COUNT = 2;
 const CARD_FILM_EXTRA_COUNT = 2;
 
 export default class MovieList {
-  constructor(mainContainer, filmsModel, filterModel) {
+  constructor(mainContainer, filmsModel, filterModel, api) {
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
     this._movieListContainer = mainContainer;
@@ -31,14 +32,17 @@ export default class MovieList {
     this._filmBlockComponent = new FilmBlockView();
     this._filmListComponent = new FilmListContainerView();
     this._noFilmsComponent = new NoFilmsView();
+    this._loadingComponent = new LoadingView();
     this._filmBlock = null;
     this._filmList = null;
+    this._isLoading = true;
     this._filmListContainer = null;
     this._topRateFilmsContainer = null;
     this._mostCommentedFilmsContainer = null;
     this._mainFilmCardPresenters = {};
     this._topratingFilmCardPresenter = {};
     this._topCommentedFilmCardPresenter = {};
+    this._api = api;
 
     this._handleChangePopup = this._handleChangePopup.bind(this);
     this._handleLoadMoreBtnClick = this._handleLoadMoreBtnClick.bind(this);
@@ -71,7 +75,9 @@ export default class MovieList {
   _handleViewAction(userAction, updateType, update, popupStatus) {
     switch (userAction) {
       case UserAction.UPDATE:
-        this._filmsModel.updateData(updateType, update, popupStatus);
+        this._api.updateFilm(update).then((response) => {
+          this._filmsModel.updateData(updateType, response);
+        });
         break;
       case UserAction.ADD_COMMENT:
         this._filmsModel.updateData(updateType, update, popupStatus);
@@ -123,6 +129,11 @@ export default class MovieList {
 
         }
         break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderFilmBlock();
+        break;
     }
   }
 
@@ -145,6 +156,10 @@ export default class MovieList {
   }
 
   _renderNoFilms() {
+    render(this._filmList, this._noFilmsComponent);
+  }
+
+  _renderLoading() {
     render(this._filmList, this._noFilmsComponent);
   }
 
@@ -273,6 +288,7 @@ export default class MovieList {
     this._topratingFilmCardPresenter = {};
     remove(this._sortComponent);
     remove(this._noFilmsComponent);
+    remove(this._loadingComponent);
     remove(this._loadMoreBtnComponent);
 
     if (resetFilmCardCount) {
@@ -287,18 +303,21 @@ export default class MovieList {
   }
 
   _renderFilmBlock() {
+    render(this._movieListContainer, this._filmBlockComponent);
+    this._filmBlock = this._movieListContainer.querySelector('.films');
+    this._filmList = this._movieListContainer.querySelector('.films-list');
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+    render(this._filmBlock, this._filmListComponent);
+    render(this._filmList, this._filmListComponent);
+
+    this._renderSort();
     if (!this._getFilms().length) {
       this._renderNoFilms();
       return;
     }
-    this._renderSort();
-    render(this._movieListContainer, this._filmBlockComponent);
-
-    this._filmBlock = this._movieListContainer.querySelector('.films');
-    this._filmList = this._movieListContainer.querySelector('.films-list');
-
-    render(this._filmBlock, this._filmListComponent);
-    render(this._filmList, this._filmListComponent);
 
     this._renderFilmList();
     this._renderExtraFilmBlock();

@@ -61,7 +61,7 @@ export const getSortFilm = (films, sortName) => {
     if (sortName === 'rating') {
       return b.filmInfo.totalRating - a.filmInfo.totalRating;
     } else {
-      return b.filmInfo.comments.length - a.filmInfo.comments.length;
+      return b.comments.length - a.comments.length;
     }
   });
   return topFilms;

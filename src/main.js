@@ -31,14 +31,10 @@ filmPresenter.init();
 
 api.getFilms()
   .then((films) => {
-    console.log(films)
     filmsModel.setFilms(UpdateType.INIT, films);
     render(headerElement, new HeaderView());
     render (footerStatisticsBlock, new FooterStatisticsView(films.length));
   })
-  .catch((err) => {
-    console.log(err)
+  .catch(() => {
     filmsModel.setFilms(UpdateType.INIT, []);
-    render(headerElement, new HeaderView());
-    render (footerStatisticsBlock, new FooterStatisticsView(0));
   });

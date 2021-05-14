@@ -11,7 +11,8 @@ export default class Movie {
 
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
-    this._api = api
+    this._api = api;
+    this._comments = null;
     this._bodyElement = document.querySelector('body');
     this._popupStatus = PopupStatus.CLOSE;
     this._handleChangeView = handleChangeView;
@@ -30,19 +31,14 @@ export default class Movie {
   init(film) {
 
     this._film = film;
-
     const prevFilmCardComponent = this._filmCardComponent;
     const prevPopupComponent = this._filmPopupComponent;
     this._filmCardComponent = new FilmCardView(film);
-    this._filmPopupComponent = new PopupFilmInfoView(this._film);
     this._filmCardComponent.setFilmCardClick(this._handleOpenPopup);
     this._filmCardComponent.setFilmCardWatchListClick(this._handleAddToWatchList);
     this._filmCardComponent.setFilmCardFavoritsClick(this._handleAddToFavorits);
     this._filmCardComponent.setFilmCardWatchedClick(this._handleAddToWatched);
-    this._filmPopupComponent.setCloseHandler(this._closePopup);
-    this._filmPopupComponent.setPopupControlChange(this._handleChangePopupControlButton);
-    this._filmPopupComponent.setSendNewComment(this._handleSendNewComment);
-    this._filmPopupComponent.setDeleteComment(this._handleDeleteComment);
+
 
     if (prevFilmCardComponent === null || prevPopupComponent === null) {
       render(this._filmContainer, this._filmCardComponent);
@@ -70,9 +66,17 @@ export default class Movie {
   }
 
   _openPopup() {
-    render(document.body, this._filmPopupComponent);
-    document.addEventListener('keydown', this._escKeyDownHandler);
-    this._bodyElement.classList.add('hide-overflow');
+    this._api.getComments(this._film.id).then((comments) => {
+      this._comments = comments;
+      this._filmPopupComponent = new PopupFilmInfoView(this._film, this._comments);
+      render(document.body, this._filmPopupComponent);
+      this._filmPopupComponent.setCloseHandler(this._closePopup);
+      this._filmPopupComponent.setPopupControlChange(this._handleChangePopupControlButton);
+      this._filmPopupComponent.setSendNewComment(this._handleSendNewComment);
+      this._filmPopupComponent.setDeleteComment(this._handleDeleteComment);
+      document.addEventListener('keydown', this._escKeyDownHandler);
+      this._bodyElement.classList.add('hide-overflow');
+    });
   }
 
   _closePopup() {

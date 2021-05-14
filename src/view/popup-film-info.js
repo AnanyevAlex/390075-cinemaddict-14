@@ -36,8 +36,9 @@ const createGenresTemplate = (genres) => {
             </tr>`;
 };
 
-const createPopupFilmInfo = (data) => {
-  const { filmInfo, userDetails, currentEmoji, currentTextComment } = data;
+const createPopupFilmInfo = (data, comment) => {
+  const { filmInfo, currentEmoji, currentTextComment } = data;
+  const userDetails = comment;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -111,7 +112,7 @@ const createPopupFilmInfo = (data) => {
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${data.comments.length}</span></h3>
 
-        ${createCommentsTemplate(filmInfo.comments)}
+        ${createCommentsTemplate(userDetails)}
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label">
@@ -151,9 +152,10 @@ const createPopupFilmInfo = (data) => {
 };
 
 export default class PopupFilmInfo extends SmartView {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._data = PopupFilmInfo.parseFilmCardToState(film);
+    this._comments = comments;
     this._editClickHandler = this._editClickHandler.bind(this);
     this._handleControlButton = this._handleControlButton.bind(this);
     this._handleEmojiChange = this._handleEmojiChange.bind(this);
@@ -164,7 +166,7 @@ export default class PopupFilmInfo extends SmartView {
   }
 
   getTemplate() {
-    return createPopupFilmInfo(this._data);
+    return createPopupFilmInfo(this._data, this._comments);
   }
 
   _editClickHandler(evt) {

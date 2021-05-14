@@ -1,4 +1,5 @@
 import Observer from '../utils/observer.js';
+import dayjs from 'dayjs';
 
 export default class Films extends Observer {
   constructor() {
@@ -69,8 +70,8 @@ export default class Films extends Observer {
           'actors': film.filmInfo.actors,
           'total_rating': film.filmInfo.totalRating,
           'release': {
-            'date':  film.filmInfo.release.date,
-            'release_country': film.filmInfo.release.country,
+            'date':  dayjs(film.filmInfo.release.date).toISOString(),
+            'release_country': film.filmInfo.release.releaseCountry,
           },
           'runtime': film.filmInfo.runtime,
           'genre': film.filmInfo.genre,
@@ -80,7 +81,7 @@ export default class Films extends Observer {
           'watchlist': film.userDetails.watchlist,
           'favorite': film.userDetails.favorite,
           'already_watched':film.userDetails.alreadyWatched,
-          'watching_date': film.userDetails.watchingDate,
+          'watching_date': dayjs(film.userDetails.watchingDate).toISOString(),
         },
       },
     );

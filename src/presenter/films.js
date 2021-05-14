@@ -55,7 +55,6 @@ export default class MovieList {
   }
 
   init() {
-    this._renderFilmBlock();
   }
 
   _getFilms() {
@@ -160,7 +159,7 @@ export default class MovieList {
   }
 
   _renderLoading() {
-    render(this._filmList, this._noFilmsComponent);
+    render(this._filmList, this._loadingComponent);
   }
 
   _renderFilm(container, film, typePresenter) {
@@ -238,6 +237,7 @@ export default class MovieList {
     const mostRateFilms = getSortFilm(this._getFilms(), 'rating').slice(0, CARD_FILM_EXTRA_COUNT);
     const mostCommentFilms = getSortFilm(this._getFilms(), 'comment').slice(0, CARD_FILM_EXTRA_COUNT);
 
+
     this._renderFilms(this._topRateFilmsContainer, mostRateFilms, 'rate');
     this._renderFilms(this._mostCommentedFilmsContainer, mostCommentFilms, 'comment');
   }
@@ -303,6 +303,7 @@ export default class MovieList {
   }
 
   _renderFilmBlock() {
+    this._renderSort();
     render(this._movieListContainer, this._filmBlockComponent);
     this._filmBlock = this._movieListContainer.querySelector('.films');
     this._filmList = this._movieListContainer.querySelector('.films-list');
@@ -313,7 +314,6 @@ export default class MovieList {
     render(this._filmBlock, this._filmListComponent);
     render(this._filmList, this._filmListComponent);
 
-    this._renderSort();
     if (!this._getFilms().length) {
       this._renderNoFilms();
       return;

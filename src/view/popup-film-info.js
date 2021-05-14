@@ -109,7 +109,7 @@ const createPopupFilmInfo = (data) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${filmInfo.comments.length}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${data.comments.length}</span></h3>
 
         ${createCommentsTemplate(filmInfo.comments)}
 
@@ -154,7 +154,6 @@ export default class PopupFilmInfo extends SmartView {
   constructor(film) {
     super();
     this._data = PopupFilmInfo.parseFilmCardToState(film);
-
     this._editClickHandler = this._editClickHandler.bind(this);
     this._handleControlButton = this._handleControlButton.bind(this);
     this._handleEmojiChange = this._handleEmojiChange.bind(this);

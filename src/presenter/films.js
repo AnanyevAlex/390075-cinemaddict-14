@@ -164,7 +164,7 @@ export default class MovieList {
   }
 
   _renderFilm(container, film, typePresenter) {
-    this._filmCardPresenter = new FilmsCardPresenter(container, this._handleViewAction, this._handleChangePopup);
+    this._filmCardPresenter = new FilmsCardPresenter(container, this._handleViewAction, this._handleChangePopup, this._api);
     this._filmCardPresenter.init(film);
     if (typePresenter === 'rate') {
       this._topratingFilmCardPresenter[film.id] = this._filmCardPresenter;

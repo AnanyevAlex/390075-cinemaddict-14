@@ -5,13 +5,13 @@ import { render, replace, remove } from '../utils/render';
 import { PopupStatus, PopupControlType, UpdateType, UserAction } from '../const';
 
 export default class Movie {
-  constructor(filmContainer, handleChangeData, handleChangeView) {
+  constructor(filmContainer, handleChangeData, handleChangeView, api) {
     this._filmContainer = filmContainer;
     this._handleChangeData = handleChangeData;
 
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
-
+    this._api = api
     this._bodyElement = document.querySelector('body');
     this._popupStatus = PopupStatus.CLOSE;
     this._handleChangeView = handleChangeView;

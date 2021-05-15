@@ -61,6 +61,14 @@ export const PopupStatus = {
   CLOSE: 'close',
 };
 
+export const PopupState = {
+  DELETE: 'delete',
+  DISABLED: 'disable',
+  DEFAULT: 'default',
+  SUBMIT: 'submit',
+  ABORTING: 'aborting',
+};
+
 export const FilterType = {
   ALL_MOVIES: 'All movies',
   WATCHLIST: 'Watchlist',

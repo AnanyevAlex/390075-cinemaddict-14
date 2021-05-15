@@ -20,9 +20,10 @@ const FILM_EXTRA_BLOCK_COUNT = 2;
 const CARD_FILM_EXTRA_COUNT = 2;
 
 export default class MovieList {
-  constructor(mainContainer, filmsModel, filterModel, api) {
+  constructor(mainContainer, filmsModel, filterModel, api, profile) {
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
+    this._profile = profile;
     this._movieListContainer = mainContainer;
     this._statsComponent = null;
     this._renderFilmCount = FILM_COUNT_PER_STEP;
@@ -74,9 +75,16 @@ export default class MovieList {
   _handleViewAction(userAction, updateType, update, popupStatus) {
     switch (userAction) {
       case UserAction.UPDATE:
-        this._api.updateFilm(update).then((response) => {
-          this._filmsModel.updateData(updateType, response);
-        });
+        this._api.updateFilm(update)
+          .then((response) => (this._filmsModel.updateData(updateType, response)))
+          .catch(() => {
+            [
+              ...Object.values(this._mainFilmCardPresenters),
+              ...Object.values(this._topCommentedFilmCardPresenter),
+              ...Object.values(this._topratingFilmCardPresenter),
+            ]
+              .forEach((elem) => elem.errorUpdate());
+          });
         break;
       case UserAction.ADD_COMMENT:
         this._filmsModel.updateData(updateType, update, popupStatus);
@@ -111,6 +119,7 @@ export default class MovieList {
           this._clearExtraFilmsPresenters();
           this._renderExtraFilms();
         }
+        this._profile.updateData(this._filmsModel.getFilms());
         break;
       case UpdateType.MINOR:
         this._clearFilms();
@@ -313,7 +322,7 @@ export default class MovieList {
     }
     render(this._filmBlock, this._filmListComponent);
     render(this._filmList, this._filmListComponent);
-
+    this._profile.updateData(this._filmsModel.getFilms());
     if (!this._getFilms().length) {
       this._renderNoFilms();
       return;

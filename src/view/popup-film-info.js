@@ -1,9 +1,9 @@
 import SmartView from './smart';
 import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils/film';
-import {generateComments} from '../mock/movie';
 import he from 'he';
+import {PopupState} from '../const';
 
-const createCommentsTemplate = (comments) => {
+const createCommentsTemplate = (data, comments) => {
   return `
   <ul class="film-details__comments-list">
     ${comments.map((item) => `
@@ -16,13 +16,21 @@ const createCommentsTemplate = (comments) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${item.author}</span>
           <span class="film-details__comment-day">${getCommentDate(item.date)}</span>
-          <button class="film-details__comment-delete" data-comment-id="${item.id}">Delete</button>
+          <button class="film-details__comment-delete" data-comment-id="${item.id}" ${data.isDisable ? 'disabled' : ''}
+        ${data.isDelete ? 'disabled' : ''}>${data.isDelete && data.deleteID === item.id ? 'Deleting...' : 'Delete'}</button>
         </p>
       </div>
     </li>
     `,
   ).join('')}
   </ul>`;
+};
+
+const createNewCommentObj = (comment, emoji) => {
+  return {
+    'comment': comment,
+    'emotion': emoji,
+  };
 };
 
 const createGenresTemplate = (genres) => {
@@ -37,8 +45,8 @@ const createGenresTemplate = (genres) => {
 };
 
 const createPopupFilmInfo = (data, comment) => {
-  const { filmInfo, currentEmoji, currentTextComment } = data;
-  const userDetails = comment;
+  const { filmInfo, userDetails, currentEmoji, currentTextComment } = data;
+  const comments = comment;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -112,7 +120,7 @@ const createPopupFilmInfo = (data, comment) => {
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${data.comments.length}</span></h3>
 
-        ${createCommentsTemplate(userDetails)}
+        ${createCommentsTemplate(data, comments)}
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label">
@@ -203,7 +211,11 @@ export default class PopupFilmInfo extends SmartView {
   }
   _descriptionInputHandler (evt) {
     evt.preventDefault();
-    this.updateData({currentTextComment: evt.target.value}, true);
+    // this.updateData({currentTextComment: evt.target.value}, true);
+    this.updateData(
+      { currentTextComment: evt.target.value },
+      false,
+    );
   }
   setPopupControlChange(callback) {
     this._callback.inputControlPopup = callback;
@@ -215,12 +227,24 @@ export default class PopupFilmInfo extends SmartView {
   }
 
   _handleSendNewComment(evt) {
-    if ((evt.ctrlKey || evt.metaKey) && evt.keyCode == 13) {
-      if ( !this._data.currentEmoji || !this._data.currentTextComment){
-        return;
-      }
+    // if ((evt.ctrlKey || evt.metaKey) && evt.keyCode == 13) {
+    //   if ( !this._data.currentEmoji || !this._data.currentTextComment){
+    //     return;
+    //   }
+    //   this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
+    //   this._callback.setSendNewComment(this._data);
+    //   this.updateElement();
+    // }
+    const isRightKeys = (evt.ctrlKey || evt.metaKey) && evt.keyCode === 13;
+    if (!isRightKeys) {
+      return;
+    }
+
+    const isEmptyTextContentAndEmoji = !this._data.currentEmoji || (!this._data.currentTextComment || !this._data.currentTextComment.trim());
+
+    if (!isEmptyTextContentAndEmoji) {
+      this._callback.setSendNewComment(this._data, createNewCommentObj(this._data.currentTextComment, this._data.currentEmoji));
       this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
-      this._callback.setSendNewComment(this._data);
       this.updateElement();
     }
   }
@@ -237,6 +261,64 @@ export default class PopupFilmInfo extends SmartView {
     this._callback.setSendNewComment = callback;
   }
 
+  updateData(update, isUpdateNow = true, comments = '') {
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign(
+      {},
+      this._data,
+      update,
+    );
+
+    if (comments) {
+      this._comments = comments.slice();
+    }
+
+
+    if (!isUpdateNow) {
+      return;
+    }
+    this.updateElement();
+  }
+
+  setState(state, deleteID) {
+    switch (state) {
+      case PopupState.DISABLED:
+        this.updateData(
+          {
+            isDisable: true,
+          },
+        );
+        break;
+      case PopupState.DELETE:
+        this.updateData(
+          {
+            isDelete: true,
+            deleteID: deleteID,
+          },
+        );
+        break;
+      case PopupState.DEFAULT:
+        this.updateData(
+          {
+            isDisable: false,
+            isDelete: false,
+          },
+        );
+        break;
+      case PopupState.ABORTING:
+        this.updateData(
+          {
+            isDisable: false,
+            isDelete: false,
+          },
+        );
+        this.error();
+    }
+  }
+
   setDeleteComment(callback) {
     this._callback.deleteComment = callback;
   }
@@ -248,18 +330,21 @@ export default class PopupFilmInfo extends SmartView {
       {
         currentEmoji: 'currentEmoji' in filmCard,
         currentTextComment: '',
+        isDelete: false,
+        isSave: false,
+        isDisable: false,
+        deleteID: '',
       },
     );
   }
 
   static parseStateToFilmCard(filmCard) {
     filmCard = Object.assign({}, filmCard);
-    const newComment = generateComments();
-    newComment.comment = filmCard.currentTextComment;
-    newComment.emotion = filmCard.currentEmoji;
-    filmCard.filmInfo.comments.push(newComment);
     delete filmCard.currentTextComment;
     delete filmCard.currentEmoji;
+    delete filmCard.isDelete;
+    delete filmCard.isDisable;
+    delete filmCard.deleteID;
     return filmCard;
   }
 }

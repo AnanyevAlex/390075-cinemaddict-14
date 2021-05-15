@@ -2,7 +2,7 @@ import FilmCardView from '../view/film-card';
 import PopupFilmInfoView from '../view/popup-film-info';
 import {deepClone} from '../utils/common';
 import { render, replace, remove } from '../utils/render';
-import { PopupStatus, PopupControlType, UpdateType, UserAction } from '../const';
+import { PopupStatus, PopupState, PopupControlType, UpdateType, UserAction } from '../const';
 
 export default class Movie {
   constructor(filmContainer, handleChangeData, handleChangeView, api) {
@@ -29,7 +29,6 @@ export default class Movie {
   }
 
   init(film) {
-
     this._film = film;
     const prevFilmCardComponent = this._filmCardComponent;
     const prevPopupComponent = this._filmPopupComponent;
@@ -39,8 +38,7 @@ export default class Movie {
     this._filmCardComponent.setFilmCardFavoritsClick(this._handleAddToFavorits);
     this._filmCardComponent.setFilmCardWatchedClick(this._handleAddToWatched);
 
-
-    if (prevFilmCardComponent === null || prevPopupComponent === null) {
+    if (prevFilmCardComponent === null) {
       render(this._filmContainer, this._filmCardComponent);
       return;
     }
@@ -52,10 +50,10 @@ export default class Movie {
     if (this._popupStatus === PopupStatus.OPEN) {
       if (document.body.contains(prevPopupComponent.getElement())) {
         replace(this._filmPopupComponent, prevPopupComponent);
+        this._filmPopupComponent.updateData(this._film, true, this._comments);
       }
     }
     remove(prevFilmCardComponent);
-    remove(prevPopupComponent);
   }
 
   resetFilmView() {
@@ -135,14 +133,47 @@ export default class Movie {
     remove(this._filmCardComponent);
   }
 
-  _handleSendNewComment(updateFilmCard) {
-    this._handleChangeData(UserAction.UPDATE, UpdateType.PATH, updateFilmCard, this._popupStatus);
+  errorUpdate() {
+    this._filmCardComponent.errorUI();
+  }
+
+  // _handleSendNewComment(updateFilmCard) {
+  //   this._handleChangeData(UserAction.UPDATE, UpdateType.PATH, updateFilmCard, this._popupStatus);
+  // }
+
+  _handleSendNewComment(updateFilmCard, comment) {
+    this._filmPopupComponent.setState(PopupState.DISABLED);
+    this._api.addComment(updateFilmCard, comment)
+      .then((result) => {
+        this._comments = result.comments;
+        this._handleChangeData(UserAction.ADD_COMMENT, UpdateType.PATH, result.film, this._popupStatus);
+        this._filmPopupComponent.setState(PopupState.DEFAULT);
+      })
+      .catch(() => {
+        this._filmPopupComponent.updateData(
+          {
+            currentEmoji: comment.emotion,
+            currentTextComment: comment.comment,
+          },
+        );
+        this._filmPopupComponent.setState(PopupState.ABORTING);
+
+      });
   }
 
   _handleDeleteComment(commnetID) {
-    const updatedFilmCard = deepClone(this._film);
-    const comment = updatedFilmCard.filmInfo.comments.filter((comment) => comment.id !== commnetID);
-    updatedFilmCard.filmInfo.comments = comment;
-    this._handleChangeData(UserAction.DELETE_COMMENT, UpdateType.PATH, updatedFilmCard, this._popupStatus);
+    this._filmPopupComponent.setState(PopupState.DELETE, commnetID);
+    this._api.deleteComment(commnetID)
+      .then(() => {
+        const updatedFilmCard = deepClone(this._film);
+        const comment = updatedFilmCard.comments.filter((comment) => comment !== commnetID);
+        updatedFilmCard.comments = comment;
+        this._comments = this._comments.filter((comment) => comment.id !== commnetID);
+        this._handleChangeData(UserAction.DELETE_COMMENT, UpdateType.PATH, updatedFilmCard, this._popupStatus);
+        this._filmPopupComponent.setState(PopupState.DEFAULT);
+      })
+      .catch(() => {
+        this._filmPopupComponent.setState(PopupState.ABORTING);
+      });
   }
 }

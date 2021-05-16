@@ -45,7 +45,7 @@ export default class Api {
       method: Method.POST,
       body: JSON.stringify(comment),
       headers: new Headers({ 'Content-Type': 'application/json' }),
-    }).then(Api.getJSON)
+    }).then(Api.toJSON)
       .then((response) => {
         return {
           film: FilmsModel.adaptToClient(response.movie),

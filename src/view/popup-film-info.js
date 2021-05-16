@@ -211,7 +211,6 @@ export default class PopupFilmInfo extends SmartView {
   }
   _descriptionInputHandler (evt) {
     evt.preventDefault();
-    // this.updateData({currentTextComment: evt.target.value}, true);
     this.updateData(
       { currentTextComment: evt.target.value },
       false,
@@ -227,14 +226,6 @@ export default class PopupFilmInfo extends SmartView {
   }
 
   _handleSendNewComment(evt) {
-    // if ((evt.ctrlKey || evt.metaKey) && evt.keyCode == 13) {
-    //   if ( !this._data.currentEmoji || !this._data.currentTextComment){
-    //     return;
-    //   }
-    //   this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
-    //   this._callback.setSendNewComment(this._data);
-    //   this.updateElement();
-    // }
     const isRightKeys = (evt.ctrlKey || evt.metaKey) && evt.keyCode === 13;
     if (!isRightKeys) {
       return;

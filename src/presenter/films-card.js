@@ -137,10 +137,6 @@ export default class Movie {
     this._filmCardComponent.errorUI();
   }
 
-  // _handleSendNewComment(updateFilmCard) {
-  //   this._handleChangeData(UserAction.UPDATE, UpdateType.PATH, updateFilmCard, this._popupStatus);
-  // }
-
   _handleSendNewComment(updateFilmCard, comment) {
     this._filmPopupComponent.setState(PopupState.DISABLED);
     this._api.addComment(updateFilmCard, comment)

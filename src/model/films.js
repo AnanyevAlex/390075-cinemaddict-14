@@ -81,7 +81,7 @@ export default class Films extends Observer {
           'watchlist': film.userDetails.watchlist,
           'favorite': film.userDetails.favorite,
           'already_watched':film.userDetails.alreadyWatched,
-          'watching_date': dayjs(film.userDetails.watchingDate).toISOString(),
+          'watching_date': film.userDetails.watchingDate && dayjs(film.userDetails.watchingDate).toISOString(),
         },
       },
     );

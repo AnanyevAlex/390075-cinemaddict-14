@@ -14,7 +14,6 @@ export default class Provider {
   }
 
   getFilms() {
-    console.log('test')
     if (this.isOnline()) {
       return this._api.getFilms()
         .then((films) => {

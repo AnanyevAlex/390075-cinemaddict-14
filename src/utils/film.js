@@ -3,7 +3,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
-import {getRandomInteger} from './common';
 
 export const dateRelese = (date, type) => {
   return type === 'year' ? dayjs(date).format('YYYY') : dayjs(date).format('D-MMMM-YYYY');

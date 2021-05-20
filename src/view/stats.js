@@ -2,8 +2,6 @@ import Smart from '../view/smart.js';
 import { getStatus } from '../utils/stats.js';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {isWatched} from '../utils/film';
 import {PeriodOfStatistics} from '../const';
 
@@ -47,75 +45,6 @@ const getWatchedStatistic = (watchedFilms) => {
     userStatus: getStatus(watchedFilms.length),
     watchedFilmCount: watchedFilms.length,
   };
-};
-
-const renderGenresChart = (cxt, genresStats) => {
-  let data;
-  let label;
-  if (!Object.keys(genresStats)) {
-    data = 0;
-    label = '';
-  } else {
-    data = Object.values(genresStats);
-    label = Object.keys(genresStats);
-  }
-
-  return new Chart(cxt, {
-    plugins: [ChartDataLabels],
-    type: 'horizontalBar',
-    data: {
-      labels: label,
-      datasets: [{
-        data: data,
-        backgroundColor: '#ffe800',
-        hoverBackgroundColor: '#ffe800',
-        anchor: 'start',
-        barThickness: 24,
-      }],
-    },
-    options: {
-      plugins: {
-        datalabels: {
-          font: {
-            size: 20,
-          },
-          color: '#ffffff',
-          anchor: 'start',
-          align: 'start',
-          offset: 40,
-        },
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            fontColor: '#ffffff',
-            padding: 100,
-            fontSize: 20,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
-        }],
-        xAxes: [{
-          ticks: {
-            display: false,
-            beginAtZero: true,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
-        }],
-      },
-      legend: {
-        display: false,
-      },
-      tooltips: {
-        enabled: false,
-      },
-    },
-  });
 };
 
 const inputTemplate = (input, currentInput) => {

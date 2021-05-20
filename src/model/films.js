@@ -86,10 +86,8 @@ export default class Films extends Observer {
       },
     );
 
-    // Ненужные ключи мы удаляем
     delete adaptedFilm.filmInfo;
     delete adaptedFilm.userDetails;
-
     return adaptedFilm;
   }
 

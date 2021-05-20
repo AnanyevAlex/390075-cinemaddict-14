@@ -70,7 +70,7 @@ export default class Movie {
       this._filmPopupComponent = new PopupFilmInfoView(this._film, this._comments);
       render(document.body, this._filmPopupComponent);
       if (!this._api.isOnline()) {
-        toast(ToastMessages.OPEN_POP_UP);
+        toast(ToastMessages.OPEN_POPUP);
       }
       this._filmPopupComponent.setCloseHandler(this._closePopup);
       this._filmPopupComponent.setPopupControlChange(this._handleChangePopupControlButton);

@@ -1,6 +1,5 @@
 import {FilterType} from '../const';
-import {isWatch, isWatched, isFavorite} from '../utils/film';
-
+import {isWatch, isWatched, isFavorite} from './film';
 
 export const filter = {
   [FilterType.ALL_MOVIES]: (films) => films,
@@ -8,10 +7,4 @@ export const filter = {
   [FilterType.WATCHLIST]: (films) => films.filter((film) => isWatch(film)),
   [FilterType.FAVORITES]: (films) => films.filter((film) => isFavorite(film)),
   [FilterType.HISTORY]: (films) => films.filter((film) => isWatched(film)),
-};
-
-export const FilterTypeMatchToFilmsControl = {
-  [FilterType.WATCHLIST]: 'isWatchList',
-  [FilterType.FAVORITES]: 'isFavorite',
-  [FilterType.HISTORY]: 'isWatched',
 };

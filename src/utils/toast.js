@@ -1,7 +1,7 @@
 const SHOW_TIME = 5000;
 
 const ToastMessages = {
-  OPEN_POP_UP: 'Can\'t show comments.Offline mode',
+  OPEN_POPUP: 'Can\'t show comments.Offline mode',
   OFFLINE_SEND_COMMENT: 'You can\'t send comment. Offline mode',
   OFFLINE_DELETE_COMMENT: 'You can\'t delete comment. Offline mode',
 };

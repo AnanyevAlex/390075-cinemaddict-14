@@ -180,7 +180,6 @@ export default class Stats extends Smart {
       films,
       statisticPeriod: PeriodOfStatistics.ALL,
     };
-    this._genresChart = null;
     this._periodChangeHandler = this._periodChangeHandler.bind(this);
     this._setInnersHandler();
 
@@ -207,13 +206,8 @@ export default class Stats extends Smart {
   }
 
   _setChart() {
-    const { films, statisticPeriod } = this._data;
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
     const BAR_HEIGHT = 50;
     statisticCtx.height = BAR_HEIGHT * 5;
-
-    const watchedFilmByPeriod = getWatchedFilmByPeriod(films, statisticPeriod);
-    const watchedStatistic = getWatchedStatistic(watchedFilmByPeriod);
-    this._genresChart = renderGenresChart(statisticCtx, watchedStatistic.genresStatistic);
   }
 }

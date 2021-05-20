@@ -138,7 +138,7 @@ export default class Movie {
   }
 
   errorUpdate() {
-    this._filmCardComponent.errorUI();
+    this._filmCardComponent.error();
   }
 
   _handleSendNewComment(updateFilmCard, comment) {

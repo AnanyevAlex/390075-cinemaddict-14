@@ -13,25 +13,6 @@ export const getCommentDate = (date) => {
   return dayjs(date).fromNow();
 };
 
-export const getRandomItem = (array) => {
-  const randomIndex = getRandomInteger(0, array.length - 1);
-
-  return array[randomIndex];
-};
-
-export const getRandomItems = (array, maxCount) => {
-  const arrayCopy = array.slice().sort(() => Math.random() - 0.5);
-  return arrayCopy.slice(0, maxCount);
-};
-
-export const generateDate = () => {
-  const minDayGap = 180;
-  const maxDayGap = 680;
-
-  const daysGap = getRandomInteger(-minDayGap, -maxDayGap);
-  return dayjs().add(daysGap, 'day').toDate();
-};
-
 export const isWatch = (film) => {
   return film.userDetails.watchlist;
 };

@@ -14,7 +14,6 @@ import {FilterType, SortType, UpdateType, UserAction} from '../const';
 import {sortDateUp} from '../utils/film';
 import {filter} from '../utils/filter';
 import StatsView from '../view/stats';
-
 const FILM_COUNT_PER_STEP = 5;
 const FILM_EXTRA_BLOCK_COUNT = 2;
 const CARD_FILM_EXTRA_COUNT = 2;

@@ -2,8 +2,12 @@ import Smart from '../view/smart.js';
 import { getStatus } from '../utils/stats.js';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import Chart from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {isWatched} from '../utils/film';
 import {PeriodOfStatistics} from '../const';
+
+const BAR_HEIGHT = 500;
 
 dayjs.extend(isBetween);
 
@@ -30,8 +34,8 @@ const getWatchedStatistic = (watchedFilms) => {
     };
   }
 
-  for (let i = 0; i < watchedFilms.length; i++) {
-    const film = watchedFilms[i];
+  for (const watchedFilm of watchedFilms) {
+    const film = watchedFilm;
     watchingTime += film.filmInfo.runtime,
     film.filmInfo.genre.forEach((elem) => genresStatistic[elem] = genresStatistic[elem] + 1 || 1);
   }
@@ -47,7 +51,76 @@ const getWatchedStatistic = (watchedFilms) => {
   };
 };
 
-const inputTemplate = (input, currentInput) => {
+const renderGenresChart = (cxt, genresStats) => {
+  let data;
+  let label;
+  if (!Object.keys(genresStats)) {
+    data = 0;
+    label = '';
+  } else {
+    data = Object.values(genresStats);
+    label = Object.keys(genresStats);
+  }
+
+  return new Chart(cxt, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: label,
+      datasets: [{
+        data: data,
+        backgroundColor: '#ffe800',
+        hoverBackgroundColor: '#ffe800',
+        anchor: 'start',
+        barThickness: 24,
+      }],
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 20,
+          },
+          color: '#ffffff',
+          anchor: 'start',
+          align: 'start',
+          offset: 40,
+        },
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#ffffff',
+            padding: 100,
+            fontSize: 20,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+    },
+  });
+};
+
+const createInputTemplate = (input, currentInput) => {
   return `<input type="radio"
    class="statistic__filters-input visually-hidden" name="statistic-filter"
    id="statistic-${input}" value="${input}"
@@ -56,19 +129,20 @@ const inputTemplate = (input, currentInput) => {
   ${input === PeriodOfStatistics.ALL ? 'All time' : `${input.charAt(0).toUpperCase() + input.slice(1)}`}</label>`;
 };
 
-const periodControlsTemplate = (currentInput) => {
+const CreatePeriodControlsTemplate = (currentInput) => {
   return Object.values(PeriodOfStatistics)
-    .map((input) => inputTemplate(input, currentInput)).join('');
+    .map((input) => createInputTemplate(input, currentInput)).join('');
 };
 
-const statsTemplate = (data) => {
+const createStatsTemplate = (data) => {
   const { films, statisticPeriod } = data;
+  const watchedFilms = films.filter((film) => film.userDetails.alreadyWatched);
+  const userStatus = getStatus(watchedFilms.length);
   const watchedFilmByPeriod = getWatchedFilmByPeriod(films, statisticPeriod);
   const watchedStatistic = getWatchedStatistic(watchedFilmByPeriod);
   const { watchingTime,
     topGenre,
     watchedFilmCount,
-    userStatus,
   } = watchedStatistic;
 
   return `<section class="statistic">
@@ -79,7 +153,7 @@ const statsTemplate = (data) => {
   </p>
   <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
     <p class="statistic__filters-description">Show stats:</p>
-    ${periodControlsTemplate(statisticPeriod)}
+    ${CreatePeriodControlsTemplate(statisticPeriod)}
   </form>
   <ul class="statistic__text-list">
     <li class="statistic__text-item">
@@ -116,7 +190,7 @@ export default class Stats extends Smart {
   }
 
   getTemplate() {
-    return statsTemplate(this._data);
+    return createStatsTemplate(this._data);
   }
 
   _setInnersHandler() {
@@ -135,8 +209,12 @@ export default class Stats extends Smart {
   }
 
   _setChart() {
+    const { films, statisticPeriod } = this._data;
     const statisticCtx = this.getElement().querySelector('.statistic__chart');
-    const BAR_HEIGHT = 50;
-    statisticCtx.height = BAR_HEIGHT * 5;
+    statisticCtx.height = BAR_HEIGHT;
+
+    const watchedFilmByPeriod = getWatchedFilmByPeriod(films, statisticPeriod);
+    const watchedStatistic = getWatchedStatistic(watchedFilmByPeriod);
+    renderGenresChart(statisticCtx, watchedStatistic.genresStatistic);
   }
 }

@@ -1,3 +1,5 @@
+export const DESCRIPTION_LIMIT = 140;
+
 export const SortType = {
   DEFAULT: 'default',
   DATE: 'date',
@@ -45,7 +47,7 @@ export const FilterType = {
 };
 
 export const USER_STATUS = {
-  'none': {
+  '': {
     FROM: 0,
     TO: 0,
   },

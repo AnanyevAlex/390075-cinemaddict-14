@@ -1,9 +1,9 @@
 import {USER_STATUS} from '../const';
 
-const getStatus = (number) => {
+const getStatus = (count) => {
   const status = [];
   for (const key in USER_STATUS) {
-    if (USER_STATUS[key].FROM <= number && number <= USER_STATUS[key].TO) {
+    if (USER_STATUS[key].FROM <= count && count <= USER_STATUS[key].TO) {
       status.push(key);
     }
   }

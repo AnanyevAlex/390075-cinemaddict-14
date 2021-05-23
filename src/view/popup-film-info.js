@@ -3,6 +3,9 @@ import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked
 import he from 'he';
 import {PopupState} from '../const';
 
+const SHAKE_EFFECT_TIMEOUT = 1000;
+const ENTER_KEYCODE = 13;
+
 const createCommentsTemplate = (data, comments) => {
   return `
   <ul class="film-details__comments-list">
@@ -57,7 +60,7 @@ const createPopupFilmInfo = (data, comment) => {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${filmInfo.poster}" alt="">
 
-          <p class="film-details__age">${filmInfo.ageRating}</p>
+          <p class="film-details__age">${filmInfo.ageRating}+</p>
         </div>
 
         <div class="film-details__info">
@@ -226,7 +229,7 @@ export default class PopupFilmInfo extends SmartView {
   }
 
   _handleSendNewComment(evt) {
-    const isRightKeys = (evt.ctrlKey || evt.metaKey) && evt.keyCode === 13;
+    const isRightKeys = (evt.ctrlKey || evt.metaKey) && evt.keyCode === ENTER_KEYCODE;
     if (!isRightKeys) {
       return;
     }
@@ -306,7 +309,8 @@ export default class PopupFilmInfo extends SmartView {
             isDelete: false,
           },
         );
-        this.error();
+        this._element.querySelector('.film-details__comment-label').classList.add('shake');
+        setTimeout(() => this.getElement().classList.remove('shake'), SHAKE_EFFECT_TIMEOUT);
     }
   }
 

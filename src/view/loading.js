@@ -1,6 +1,6 @@
 import AbstractView from './abstract.js';
 
-const loadingTemplate = () => {
+const createLoadingTemplate = () => {
   return `<section class="films">
   <section class="films-list">
     <h2 class="films-list__title">Loading...</h2>
@@ -8,12 +8,12 @@ const loadingTemplate = () => {
 </section>`;
 };
 
-export default class Loadin extends AbstractView {
+export default class Loading extends AbstractView {
   constructor (){
     super();
   }
 
   getTemplate() {
-    return loadingTemplate();
+    return createLoadingTemplate();
   }
 }

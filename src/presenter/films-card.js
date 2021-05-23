@@ -3,7 +3,7 @@ import PopupFilmInfoView from '../view/popup-film-info';
 import {deepClone} from '../utils/common';
 import { render, replace, remove } from '../utils/render';
 import { PopupStatus, PopupState, PopupControlType, UpdateType, UserAction } from '../const';
-import { toast, ToastMessages } from '../utils/toast.js';
+import { showToast, ToastMessages } from '../utils/toast.js';
 
 export default class Movie {
   constructor(filmContainer, handleChangeData, handleChangeView, api) {
@@ -70,7 +70,7 @@ export default class Movie {
       this._filmPopupComponent = new PopupFilmInfoView(this._film, this._comments);
       render(document.body, this._filmPopupComponent);
       if (!this._api.isOnline()) {
-        toast(ToastMessages.OPEN_POPUP);
+        showToast(ToastMessages.OPEN_POPUP);
       }
       this._filmPopupComponent.setCloseHandler(this._closePopup);
       this._filmPopupComponent.setPopupControlChange(this._handleChangePopupControlButton);
@@ -151,7 +151,7 @@ export default class Movie {
       })
       .catch(() => {
         if (!this._api.isOnline()) {
-          toast(ToastMessages.OFFLINE_SEND_COMMENT);
+          showToast(ToastMessages.OFFLINE_SEND_COMMENT);
         }
         this._filmPopupComponent.updateData(
           {
@@ -177,7 +177,7 @@ export default class Movie {
       })
       .catch(() => {
         if (!this._api.isOnline()) {
-          toast(ToastMessages.OFFLINE_DELETE_COMMENT);
+          showToast(ToastMessages.OFFLINE_DELETE_COMMENT);
         }
         this._filmPopupComponent.setState(PopupState.ABORTING);
       });

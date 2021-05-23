@@ -1,7 +1,7 @@
 import { getStatus } from '../utils/stats.js';
 import Smart from '../view/smart.js';
 
-const headerProfileTemplate = (films) => {
+const createHeaderProfileTemplate = (films) => {
   const watchedFilms = films.filter((film) => film.userDetails.alreadyWatched);
   const userStatus = getStatus(watchedFilms.length);
 
@@ -23,7 +23,7 @@ export default class Profile extends Smart {
   }
 
   getTemplate() {
-    return headerProfileTemplate(this._data);
+    return createHeaderProfileTemplate(this._data);
   }
 
   updateData(data) {

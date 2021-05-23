@@ -55,6 +55,7 @@ export default class MovieList {
   }
 
   init() {
+    this._renderFilmBlock();
   }
 
   _getFilms() {
@@ -311,14 +312,18 @@ export default class MovieList {
   }
 
   _renderFilmBlock() {
-    this._renderSort();
+    if (!this._isLoading) {
+      this._renderSort();
+    }
     render(this._movieListContainer, this._filmBlockComponent);
     this._filmBlock = this._movieListContainer.querySelector('.films');
     this._filmList = this._movieListContainer.querySelector('.films-list');
+
     if (this._isLoading) {
       this._renderLoading();
       return;
     }
+
     render(this._filmBlock, this._filmListComponent);
     render(this._filmList, this._filmListComponent);
     this._profile.updateData(this._filmsModel.getFilms());

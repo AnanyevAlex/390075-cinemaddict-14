@@ -103,19 +103,4 @@ export default class Films extends Observer {
     ];
     this._notify(typeUpdate, update, popupStatus);
   }
-
-  deleteComment(updateType, update) {
-    const index = this._tasks.findIndex((task) => task.id === update.id);
-
-    if (index === -1) {
-      throw new Error('Can\'t delete unexisting task');
-    }
-
-    this._tasks = [
-      ...this._tasks.slice(0, index),
-      ...this._tasks.slice(index + 1),
-    ];
-
-    this._notify(updateType);
-  }
 }

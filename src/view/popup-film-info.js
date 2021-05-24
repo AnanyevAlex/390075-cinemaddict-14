@@ -256,8 +256,6 @@ export default class PopupFilmInfo extends SmartView {
   }
 
   updateData(update, isUpdateNow = true, comments = '') {
-    console.log('2')
-    console.log(update)
     if (!update) {
       return;
     }

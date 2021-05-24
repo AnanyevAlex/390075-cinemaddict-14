@@ -248,8 +248,6 @@ export default class MovieList {
       this._mostCommentedFilmsContainer = mostCommentedFilmsBlock.querySelector('.films-list__container');
       this._renderMostCommentFilms(mostCommentFilms);
     }
-
-    // this._renderExtraFilms(mostRateFilms, mostCommentFilms);
   }
 
   _renderMostRateFilms(films) {
@@ -259,11 +257,6 @@ export default class MovieList {
   _renderMostCommentFilms(films) {
     this._renderFilms(this._mostCommentedFilmsContainer, films, 'comment');
   }
-
-  // _renderExtraFilms(mostRateFilms, mostCommentFilms) {
-  //   this._renderFilms(this._topRateFilmsContainer, mostRateFilms, 'rate');
-  //   this._renderFilms(this._mostCommentedFilmsContainer, mostCommentFilms, 'comment');
-  // }
 
   _renderFilmList() {
     this._filmListContainer = this._movieListContainer.querySelector('.films-list__container');

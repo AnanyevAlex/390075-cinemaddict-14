@@ -106,10 +106,8 @@ export default class MovieList {
         replace(this._statsComponent,this._filmListComponent);
         break;
       case UpdateType.PATH:
-        const filterType = this._filterModel.getFilter();
-        const filteredFilms = filter[filterType]([updateFilmCard]);
-        if (!filteredFilms.length) {
-          this._mainFilmCardPresenters[updateFilmCard.id].destroy()
+        if (!filter[this._filterModel.getFilter()]([updateFilmCard].length)) {
+          this._mainFilmCardPresenters[updateFilmCard.id].destroy();
         }
         if (updateFilmCard.id in this._mainFilmCardPresenters) {
           this._mainFilmCardPresenters[updateFilmCard.id].init(updateFilmCard);
@@ -229,7 +227,7 @@ export default class MovieList {
   }
 
   _renderExtraFilmBlock() {
-    const allFilms = this._filmsModel.getFilms()
+    const allFilms = this._filmsModel.getFilms();
     const mostRateFilms = getSortFilm(allFilms, 'rating').slice(0, CARD_FILM_EXTRA_COUNT);
     const mostCommentFilms = getSortFilm(allFilms, 'comment').slice(0, CARD_FILM_EXTRA_COUNT);
     for (let i = 0; i < FILM_EXTRA_BLOCK_COUNT; i++) {

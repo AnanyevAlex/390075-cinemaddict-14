@@ -264,7 +264,8 @@ export default class PopupFilmInfo extends SmartView {
     }
 
     if (update.isDelete && update.isDelete === true) {
-      this._element.querySelectorAll('.film-details__comment-delete').forEach((item) => {item.setAttribute('disabled', 'disabled')});
+      this._element.querySelectorAll('.film-details__comment-delete')
+        .forEach((item) => {item.setAttribute('disabled', 'disabled');});
     }
 
     this._data = Object.assign(

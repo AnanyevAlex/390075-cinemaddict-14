@@ -141,12 +141,13 @@ export default class Movie {
     this._filmCardComponent.error();
   }
 
-  _handleSendNewComment(updateFilmCard, comment) {
+  _handleSendNewComment(updateFilmCard, comment, callback) {
     this._filmPopupComponent.setState(PopupState.DISABLED);
     this._api.addComment(updateFilmCard, comment)
       .then((result) => {
         this._comments = result.comments;
         this._handleChangeData(UserAction.ADD_COMMENT, UpdateType.PATH, result.film, this._popupStatus);
+        callback();
         this._filmPopupComponent.setState(PopupState.DEFAULT);
       })
       .catch(() => {
@@ -160,7 +161,6 @@ export default class Movie {
           },
         );
         this._filmPopupComponent.setState(PopupState.ABORTING);
-
       });
   }
 

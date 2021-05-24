@@ -237,7 +237,10 @@ export default class PopupFilmInfo extends SmartView {
     const isEmptyTextContentAndEmoji = !this._data.currentEmoji || (!this._data.currentTextComment || !this._data.currentTextComment.trim());
 
     if (!isEmptyTextContentAndEmoji) {
-      this._callback.setSendNewComment(this._data, createNewCommentObj(this._data.currentTextComment, this._data.currentEmoji));
+      this._callback.setSendNewComment(this._data, createNewCommentObj(this._data.currentTextComment, this._data.currentEmoji), () => {
+        this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
+        this.updateElement();
+      });
       this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
       this.updateElement();
     }

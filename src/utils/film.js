@@ -5,8 +5,8 @@ import {DESCRIPTION_LIMIT} from '../const';
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
-export const dateRelese = (date, type) => {
-  return type === 'year' ? dayjs(date).format('YYYY') : dayjs(date).format('D MMMM YYYY');
+export const getDateRelese = (date, type) => {
+  return type === 'year' ? dayjs(date).format('YYYY') : dayjs(date).format('DD MMMM YYYY');
 };
 
 export const getCommentDate = (date) => {
@@ -51,7 +51,7 @@ export const sortDateUp = (filmA, filmB) => {
   return dayjs(filmB.filmInfo.release.date).diff(dayjs(filmA.filmInfo.release.date));
 };
 
-export const limitText = (text) => {
+export const getLimitText = (text) => {
   if (text.length <= DESCRIPTION_LIMIT) {
     return text;
   }

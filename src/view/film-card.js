@@ -1,5 +1,5 @@
 import AbstractView from './abstract';
-import {isWatch, isWatched, isFavorite, getTimeFromMins, dateRelese, limitText} from '../utils/film';
+import {isWatch, isWatched, isFavorite, getTimeFromMins, getDateRelese, getLimitText} from '../utils/film';
 
 const createFilmCardTemplate = (film) => {
   const { filmInfo } = film;
@@ -8,12 +8,12 @@ const createFilmCardTemplate = (film) => {
           <h3 class="film-card__title">${filmInfo.titles.title}</h3>
           <p class="film-card__rating">${filmInfo.totalRating}</p>
           <p class="film-card__info">
-            <span class="film-card__year">${dateRelese(filmInfo.release.date, 'year')}</span>
+            <span class="film-card__year">${getDateRelese(filmInfo.release.date, 'year')}</span>
             <span class="film-card__duration">${getTimeFromMins(filmInfo.runtime)}</span>
             <span class="film-card__genre">${filmInfo.genre[0]}</span>
           </p>
           <img src="${filmInfo.poster}" alt="" class="film-card__poster">
-          <p class="film-card__description">${limitText(filmInfo.description)}</p>
+          <p class="film-card__description">${getLimitText(filmInfo.description)}</p>
           <a class="film-card__comments">${film.comments.length} comments</a>
           <div class="film-card__controls">
             <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isWatch(film) ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>

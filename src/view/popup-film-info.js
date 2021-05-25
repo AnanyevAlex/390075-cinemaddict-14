@@ -1,5 +1,5 @@
 import SmartView from './smart';
-import {dateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils/film';
+import {getDateRelese, getCommentDate, getTimeFromMins, getStringOFArray, isChecked} from '../utils/film';
 import he from 'he';
 import {PopupState} from '../const';
 
@@ -90,7 +90,7 @@ const createPopupFilmInfo = (data, comment) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${dateRelese(filmInfo.release.date)}</td>
+              <td class="film-details__cell">${getDateRelese(filmInfo.release.date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>

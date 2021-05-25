@@ -106,7 +106,7 @@ export default class MovieList {
         replace(this._statsComponent,this._filmListComponent);
         break;
       case UpdateType.PATH:
-        if (!filter[this._filterModel.getFilter()]([updateFilmCard].length)) {
+        if (!filter[this._filterModel.getFilter()]([updateFilmCard]).length) {
           this._mainFilmCardPresenters[updateFilmCard.id].destroy();
         }
         if (updateFilmCard.id in this._mainFilmCardPresenters) {

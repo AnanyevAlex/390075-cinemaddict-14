@@ -107,8 +107,6 @@ export default class MovieList {
         break;
       case UpdateType.PATH:
         if (!filter[this._filterModel.getFilter()]([updateFilmCard]).length) {
-          // this._mainFilmCardPresenters[updateFilmCard.id].destroy();
-          // this._renderFilmCount = this._renderFilmCount - 1
           this._clearFilms();
           this._renderFilmBlock();
         }

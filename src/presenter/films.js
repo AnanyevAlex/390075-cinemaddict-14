@@ -101,13 +101,16 @@ export default class MovieList {
     }
     switch (updateType) {
       case FilterType.STATS:
+        console.log('stats')
         this._clearFilms({ resetRenderedCard: true, resetSortType: true });
         this._renderStatsComponent();
         replace(this._statsComponent,this._filmListComponent);
         break;
       case UpdateType.PATH:
+        console.log('1')
         if (!filter[this._filterModel.getFilter()]([updateFilmCard]).length) {
           this._mainFilmCardPresenters[updateFilmCard.id].destroy();
+          this._renderFilmCount = this._renderFilmCount - 1
         }
         if (updateFilmCard.id in this._mainFilmCardPresenters) {
           this._mainFilmCardPresenters[updateFilmCard.id].init(updateFilmCard);
@@ -123,10 +126,12 @@ export default class MovieList {
         this._profile.updateData(this._filmsModel.getFilms());
         break;
       case UpdateType.MINOR:
+        console.log('2')
         this._clearFilms();
         this._renderFilmBlock();
         break;
       case UpdateType.MAJOR:
+        console.log('3')
         this._clearFilms({ resetFilmCardCount: true, resetSortType: true});
         if (this._statsComponent !== null) {
           replace(this._filmListComponent,this._statsComponent);
@@ -317,6 +322,7 @@ export default class MovieList {
   }
 
   _renderFilmBlock() {
+    console.log('render film block')
     if (!this._isLoading) {
       this._renderSort();
     }

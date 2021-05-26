@@ -19,8 +19,8 @@ const createCommentsTemplate = (data, comments) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${item.author}</span>
           <span class="film-details__comment-day">${getCommentDate(item.date)}</span>
-          <button class="film-details__comment-delete" data-comment-id="${item.id}" ${data.isDisable ? 'disabled' : ''}
-        ${data.isDelete ? 'disabled' : ''}>${data.isDelete && data.deleteID === item.id ? 'Deleting...' : 'Delete'}</button>
+          <button class="film-details__comment-delete" data-comment-id="${item.id}"
+        ${data.isDelete && data.deleteID === item.id  ? 'disabled' : ''}>${data.isDelete && data.deleteID === item.id ? 'Deleting...' : 'Delete'}</button>
         </p>
       </div>
     </li>
@@ -241,8 +241,6 @@ export default class PopupFilmInfo extends SmartView {
         this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
         this.updateElement();
       });
-      this._data = PopupFilmInfo.parseStateToFilmCard(this._data);
-      this.updateElement();
     }
   }
 
@@ -261,11 +259,6 @@ export default class PopupFilmInfo extends SmartView {
   updateData(update, isUpdateNow = true, comments = '') {
     if (!update) {
       return;
-    }
-
-    if (update.isDelete && update.isDelete === true) {
-      this._element.querySelectorAll('.film-details__comment-delete')
-        .forEach((item) => {item.setAttribute('disabled', 'disabled');});
     }
 
     this._data = Object.assign(

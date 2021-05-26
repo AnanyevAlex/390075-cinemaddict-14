@@ -107,8 +107,10 @@ export default class MovieList {
         break;
       case UpdateType.PATH:
         if (!filter[this._filterModel.getFilter()]([updateFilmCard]).length) {
-          this._mainFilmCardPresenters[updateFilmCard.id].destroy();
-          this._renderFilmCount = this._renderFilmCount - 1
+          // this._mainFilmCardPresenters[updateFilmCard.id].destroy();
+          // this._renderFilmCount = this._renderFilmCount - 1
+          this._clearFilms();
+          this._renderFilmBlock();
         }
         if (updateFilmCard.id in this._mainFilmCardPresenters) {
           this._mainFilmCardPresenters[updateFilmCard.id].init(updateFilmCard);
@@ -228,6 +230,7 @@ export default class MovieList {
   }
 
   _renderExtraFilmBlock() {
+    console.log('2')
     const allFilms = this._filmsModel.getFilms();
     const mostRateFilms = getSortFilm(allFilms, 'rating').slice(0, CARD_FILM_EXTRA_COUNT);
     const mostCommentFilms = getSortFilm(allFilms, 'comment').slice(0, CARD_FILM_EXTRA_COUNT);
@@ -335,6 +338,7 @@ export default class MovieList {
     this._profile.updateData(this._filmsModel.getFilms());
     if (!this._getFilms().length) {
       this._renderNoFilms();
+      this._renderExtraFilmBlock();
       return;
     }
 

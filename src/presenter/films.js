@@ -230,7 +230,6 @@ export default class MovieList {
   }
 
   _renderExtraFilmBlock() {
-    console.log('2')
     const allFilms = this._filmsModel.getFilms();
     const mostRateFilms = getSortFilm(allFilms, 'rating').slice(0, CARD_FILM_EXTRA_COUNT);
     const mostCommentFilms = getSortFilm(allFilms, 'comment').slice(0, CARD_FILM_EXTRA_COUNT);
